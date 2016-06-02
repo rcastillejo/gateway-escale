@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.sacooliveros.escale.gateway</groupId>
+    <artifactId>escale-gateway-assembly</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+    <name>escale-gateway-assembly</name>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-plugin</artifactId>
+                <version>1.2</version>
+                <configuration>
+                    <username></username>
+                    <password></password>
+                    <connectionType>developerConnection</connectionType>
+                    <tag>${project.artifactId}-${project.version}</tag>
+                    <branch>${project.artifactId}-${project.version}</branch>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/installer.xml</descriptor>
+                    </descriptors>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <finalName>${project.artifactId}-${project.version}</finalName>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    
+    <dependencies>
+        <!-- Libreria Gateway-->
+        <dependency>
+            <groupId>com.sacooliveros.escale.gateway</groupId>
+            <artifactId>escale-gateway</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+</project>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sacooliveros.gepsac.dao.mybatis.mapper.EvaluacionAcosoEscolarMapper" >
+    
+    <resultMap id="recordEvaluacionAcosoEscolar" type="com.sacooliveros.gepsac.model.evaluacion.EvaluacionAcosoEscolar" >
+        <id column="cod_evaluacion" property="codigo" jdbcType="VARCHAR" />
+        <result column="fec_evaluacion" property="fechaEvaluacion" jdbcType="DATE" />
+        <result column="cod_alumno" property="alumno.codigo" jdbcType="VARCHAR" />
+        <result column="cod_perfil" property="perfil.codigo" jdbcType="VARCHAR" />
+        <result column="cod_estado" property="estado.codigo" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <resultMap id="recordPreguntaEvaluacion" type="com.sacooliveros.gepsac.model.evaluacion.PreguntaEvaluacion" >
+        <id column="cod_pregunta" property="pregunta.codigo" jdbcType="VARCHAR" />
+        <result column="cod_evaluacion" property="codigoEvaluacion" jdbcType="VARCHAR" />
+        
+        <result column="tipo" property="pregunta.tipo" jdbcType="VARCHAR" />
+        <result column="alias" property="pregunta.alias" jdbcType="VARCHAR" />
+        <result column="enunciado" property="pregunta.enunciado" jdbcType="VARCHAR" />
+        
+        <result column="respuesta" property="respuesta" jdbcType="VARCHAR" />
+        <result column="orden_evaluado" property="ordenEvaluacion" jdbcType="INTEGER" />
+    </resultMap>
+       
+    <select id="query" resultMap="recordEvaluacionAcosoEscolar">
+        SELECT
+            cod_evaluacion,
+            fec_evaluacion,
+            cod_alumno,
+            cod_perfil,
+            cod_estado
+        FROM 
+            tp_evaluacion_acoso_escolar;
+    </select>
+  
+    <select id="get" resultMap="recordEvaluacionAcosoEscolar">
+        SELECT
+            cod_evaluacion,
+            fec_evaluacion,
+            cod_alumno,
+            cod_perfil,
+            cod_estado
+        FROM 
+            tp_evaluacion_acoso_escolar
+        where
+            cod_evaluacion=#{codigo}
+    </select>
+  
+  
+    <select id="queryEstado" resultMap="recordEvaluacionAcosoEscolar">
+        SELECT
+            cod_evaluacion,
+            fec_evaluacion,
+            b.cod_alumno,
+            b.nombres,
+            b.apellido_pat,
+            b.apellido_mat,
+            b.cod_perfil,
+            a.cod_estado
+        FROM 
+            tp_evaluacion_acoso_escolar a
+        INNER JOIN
+            tp_alumno_evaluado b ON a.cod_alumno = b.cod_alumno
+        where
+            a.cod_estado=#{codigoEstado}
+    </select>
+  
+    <select id="queryPregunta" resultMap="recordPreguntaEvaluacion">
+        SELECT
+            cod_evaluacion,
+            b.cod_pregunta,
+            b.tipo,
+            b.alias,
+            b.enunciado,
+            respuesta
+        FROM 
+            tp_pregunta_evaluacion a
+        INNER JOIN
+            tp_pregunta b ON a.cod_pregunta = b.cod_pregunta
+        where
+            cod_evaluacion=#{codigoEvaluacion}
+    </select>
+  
+    <select id="queryPreguntaAfirmativa" resultMap="recordPreguntaEvaluacion">
+        SELECT
+            cod_evaluacion,
+            b.cod_pregunta,
+            b.tipo,
+            b.alias,
+            b.enunciado,
+            respuesta
+        FROM 
+            tp_pregunta_evaluacion a
+        INNER JOIN
+            tp_pregunta b ON a.cod_pregunta = b.cod_pregunta
+        where
+            respuesta = 'SI'
+        and
+            cod_evaluacion=#{codigoEvaluacion}
+        order by 
+            orden_evaluacion asc
+    </select>
+  
+    <insert id="insert">
+        Insert into tp_evaluacion_acoso_escolar 
+            (cod_evaluacion, fec_evaluacion, cod_alumno, cod_estado)
+        values
+            (#{codigo},#{fechaEvaluacion},#{alumno.codigo},#{estado.codigo})
+    </insert>
+  
+  
+    <update id="update">
+        Update 
+            tp_evaluacion_acoso_escolar 
+        Set
+            fec_evaluacion = #{fechaEvaluacion},
+            cod_alumno = #{alumno.codigo},
+            cod_perfil = #{perfil.codigo},
+            cod_estado = #{estado.codigo}
+        Where
+            cod_evaluacion=#{codigo}
+    </update> 
+    
+    
+    <update id="updateRespEvalAcosoEscolar">
+        Update 
+            tp_evaluacion_acoso_escolar 
+        Set
+            fec_evaluacion = #{fechaEvaluacion},
+            cod_perfil = #{perfil.codigo},
+            cod_estado = #{estado.codigo}
+        Where
+            cod_evaluacion=#{codigo}
+    </update> 
+    
+    
+    <insert id="updatePreguntas">
+        Update 
+            tp_pregunta_evaluacion 
+        Set
+            orden_evaluado = #{ordenEvaluacion},
+            regla = #{regla}
+        Where
+            cod_evaluacion = #{codigoEvaluacion} and cod_pregunta = #{pregunta.codigo}
+    </insert>
+    
+</mapper>

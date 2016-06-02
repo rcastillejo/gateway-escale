@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<assembly>
+    <id>installer</id>
+    <formats>
+        <format>tar</format>
+    </formats>
+    
+    <includeBaseDirectory>false</includeBaseDirectory>
+    
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>/gepsac/libs/evaluador</outputDirectory>
+        </dependencySet>
+    </dependencySets>
+    
+    <fileSets>
+        <fileSet>
+            <directory>src/main/gepsac/clips</directory>
+            <outputDirectory>/gepsac</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+        
+        <fileSet>
+            <directory>src/main/gepsac/libs/evaluador</directory>
+            <outputDirectory>/gepsac/libs/evaluador</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+        
+        <fileSet>
+            <directory>src/main/gepsac/config/evaluador</directory>
+            <outputDirectory>/gepsac/config/evaluador</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+        
+        <fileSet>
+            <directory>src/main/gepsac/log/evaluador</directory>
+            <outputDirectory>/gepsac/log/evaluador</outputDirectory>
+        </fileSet>
+        
+        <fileSet>
+            <directory>src/main/gepsac/bin</directory>
+            <outputDirectory>/gepsac</outputDirectory>
+            <lineEnding>keep</lineEnding>
+            <fileMode>0755</fileMode>
+            <includes>
+                <!--<include>**/*.sh</include>-->
+                <include>**/*.cmd</include>
+            </includes>
+        </fileSet>        
+    </fileSets>
+</assembly>

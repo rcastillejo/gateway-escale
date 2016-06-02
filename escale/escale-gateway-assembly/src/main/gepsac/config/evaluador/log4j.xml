@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<!-- ===================================================================== -->
+<!--                                                                       -->
+<!--  Log4j Configuration                                                  -->
+<!--                                                                       -->
+<!-- ===================================================================== -->
+<!-- $Id: log4j.xml 5723 2007-07-08 22:54:42Z myuan $ -->
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+    
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%-15t] %m \t\t\t (%c{2})-[linea:%L]%n" />
+        </layout>
+    </appender>
+    
+    <appender name="TRAZADO" class="org.apache.log4j.DailyRollingFileAppender">       
+        <param name="File" value="${LOGAPP}/trazado.log" />
+        <param name="DatePattern" value="'.'yyyyMMdd" />
+        <param name="Append" value="true" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <!--<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%-10t] (%c{2}) %m - [linea:%L]%n" />-->
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%-15t] %m \t\t\t (%c{2})-[linea:%L]%n" />
+        </layout>
+        <!--<filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="TRACE"/>
+            <param name="LevelMax" value="INFO"/>
+        </filter>-->
+    </appender>    
+    
+    <appender name="ERROR" class="org.apache.log4j.DailyRollingFileAppender">       
+        <param name="File" value="${LOGAPP}/error.log" />
+        <param name="DatePattern" value="'.'yyyyMMdd" />
+        <param name="Append" value="true" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%-10t] (%c{2}) %m - [linea:%L]%n" />
+        </layout>
+        <!--<filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="ERROR"/>
+            <param name="LevelMax" value="FATAL"/>
+        </filter>-->
+    </appender>    
+    
+    <!--
+    <appender name="EMAIL"  class="org.apache.log4j.net.SMTPAppender">
+        <param name="BufferSize" value="512" />
+        <param name="SMTPHost" value="localhost" />
+        <param name="SMTPPort" value="465" />
+        <param name="SMTPProtocol" value="smtps" />
+        <param name="SMTPUsername" value="gepsac.email@sacooliveros.edu.pe" />
+        <param name="SMTPPassword" value="gepsac" />
+        <param name="SMTPDebug" value="true" />
+        <param name="From" value="gepsac.email@sacooliveros.edu.pe" />
+        <param name="To" value="ricardo.castillejo@gmail.com" />
+        <param name="Subject" value="[SMTPAppender] Application message" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{ISO8601}]%n%n%-5p%n%n%c%n%n%m%n%n" />
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="ERROR"/>
+            <param name="LevelMax" value="FATAL"/>
+        </filter>
+    </appender>
+    <logger name="SmtpAppenderLogger" additivity="false">
+        <level value="INFO"/>	
+        <appender-ref ref="EMAIL"/>
+    </logger>-->
+     
+    
+    <logger name="com.sacooliveros.gepsac" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="TRAZADO"/>
+    </logger>
+    
+    <!--<logger name="com.sacooliveros.gepsac.dao.myibatis" additivity="false">
+        <level value="ERROR" />
+        <appender-ref ref="ERROR"/>
+    </logger>-->
+
+    <root>
+        <level value="ERROR" />        
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ERROR" />
+    </root>
+</log4j:configuration>
