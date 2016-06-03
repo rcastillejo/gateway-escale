@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!--Tiempo limite en segundos que el driver espera una respuesta de la base de datos-->
+        <setting name="defaultStatementTimeout" value="15"/>
+    </settings>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="org.postgresql.Driver"/>
+                <property name="url" value="jdbc:postgresql://localhost:5432/gepsac"/>
+                <property name="username" value="postgres"/>
+                <property name="password" value="postgres"/>
+                <!-- Configuracion Pool de Conexiones -->
+                <!-- Concurrencia 20 sesiones -->
+                <property name="poolMaximumActiveConnections" value="20"/>
+                <!-- Concurrencia se encolara hasta 20 sesiones-->
+                <property name="poolMaximumIdleConnections" value="20"/>
+                
+                <property name="poolMaximumCheckoutTime" value="10"/>
+            </dataSource>
+        </environment>
+    </environments>
+    
+    <mappers>
+        <mapper resource="AlumnoMapper.xml"/>
+        <mapper resource="EvaluacionPostulanteMapper.xml"/>
+    </mappers>
+</configuration>
