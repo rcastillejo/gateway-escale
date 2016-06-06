@@ -21,11 +21,6 @@
     </properties>
     
     <dependencies>
-        <dependency>
-            <groupId>com.sacooliveros.escale.bean</groupId>
-            <artifactId>escale-bean</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
         <!--Dependencias Rest-->
         <dependency>
             <groupId>asm</groupId>
