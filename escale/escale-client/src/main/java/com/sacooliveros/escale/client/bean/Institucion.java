@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
  * Created by Ricardo on 04/06/2016.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Institute {
+public class Institucion {
 
     @XmlElement(name = "codMod")
     private String codigo;
@@ -102,7 +102,7 @@ public class Institute {
 
     @Override
     public String toString() {
-        return "Institute{" +
+        return "Institucion{" +
                 "codigo='" + codigo + '\'' +
                 ", centroEducativo='" + centroEducativo + '\'' +
                 ", nivelModalidad=" + nivelModalidad +

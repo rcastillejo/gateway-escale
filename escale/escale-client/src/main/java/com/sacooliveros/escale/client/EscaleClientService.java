@@ -1,7 +1,7 @@
 package com.sacooliveros.escale.client;
 
-import com.sacooliveros.escale.client.bean.Institute;
-import com.sacooliveros.escale.client.bean.InstitutesResponse;
+import com.sacooliveros.escale.client.bean.InstitucionResponse;
+import com.sacooliveros.escale.client.bean.InstitucionesResponse;
 
 
 /**
@@ -9,10 +9,10 @@ import com.sacooliveros.escale.client.bean.InstitutesResponse;
  */
 public interface EscaleClientService {
 
-    int getInstitutesCount(Filter filter);
+    int getInstitutesCount(Filter filtro);
 
-    InstitutesResponse getInstitutes(Filter filter);
+    InstitucionesResponse getInstitutes(Filter filtro);
 
-    //List<InstituteDetail> getInstituteDetails(Institute institute, Filter filter);
+    InstitucionResponse getInstituteDetails(String codigo, Filter filtro);
 
 }

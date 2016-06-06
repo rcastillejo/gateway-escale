@@ -5,17 +5,13 @@
  */
 package com.sacooliveros.escale.client;
 
-import java.net.ConnectException;
-import java.util.Date;
-import java.util.concurrent.ExecutionException;
-
-import com.sacooliveros.escale.client.bean.Institute;
-import com.sacooliveros.escale.client.bean.InstitutesResponse;
+import com.sacooliveros.escale.client.bean.Institucion;
+import com.sacooliveros.escale.client.bean.InstitucionResponse;
+import com.sacooliveros.escale.client.bean.InstitucionesResponse;
 import com.sacooliveros.escale.client.exception.EscaleConnectTimeoutException;
 import com.sacooliveros.escale.client.exception.EscaleReadTimeoutException;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import org.hamcrest.core.Is;
 import org.junit.*;
 
 import static org.junit.Assert.*;
@@ -139,7 +135,7 @@ public class RestEscaleClientServiceTest {
     }
 
     @Test
-    public void testInstituteRetrieveSuccess(){
+    public void testInstitutesRetrieveSuccess(){
 
         Filter filter = new Filter();
         ClientConfig clientConfig= new DefaultClientConfig();
@@ -156,14 +152,38 @@ public class RestEscaleClientServiceTest {
         filter.addStates("1");
         filter.setStart(0);
 
-        InstitutesResponse response = clientService.getInstitutes(filter);
+        InstitucionesResponse response = clientService.getInstitutes(filter);
 
-        for (Institute institute: response.getItems()) {
+        for (Institucion institute: response.getItems()) {
             System.out.println("institute:"+institute);
         }
 
         System.out.println("resultado:"+response);
         System.out.println("resultado tamanio:"+response.getItems().size());
+        assertNotNull(response);
+    }
+
+    @Test
+    public void testInstituteRetrieveSuccess(){
+
+        Filter filter = new Filter();
+        ClientConfig clientConfig= new DefaultClientConfig();
+        EscaleClientServiceConfig config = new EscaleClientServiceConfig();
+
+        clientConfig.getProperties().put(ClientConfig.PROPERTY_READ_TIMEOUT, 10);
+        clientConfig.getProperties().put(ClientConfig.PROPERTY_CONNECT_TIMEOUT, 10);
+
+        config.setUrl("http://escale.minedu.gob.pe/padron/rest/instituciones");
+        config.setPathInstituteDetail("{0}/0/");
+        clientService.setConfig(config);
+
+        filter.setExpandLevel("5");
+        filter.setYear("2005");
+        filter.addLevels("A2");
+
+        InstitucionResponse response = clientService.getInstituteDetails("0834689", filter);
+
+        System.out.println("resultado:"+response);
         assertNotNull(response);
     }
 }

@@ -10,13 +10,13 @@ import java.util.List;
 public class Filter {
     private List<String> levels;
     private List<String> states;
-    private List<String> years;
+    private String year;
     private int start;
+    private String expandLevel;
 
     public Filter() {
         this.levels = new ArrayList<String>();
         this.states= new ArrayList<String>();
-        this.years= new ArrayList<String>();
     }
 
     public List<String> getStates() {
@@ -27,9 +27,6 @@ public class Filter {
         return levels;
     }
 
-    public List<String> getYears() {
-        return years;
-    }
 
     public void addStates(String... states) {
         if(states != null && states.length > 0){
@@ -43,10 +40,8 @@ public class Filter {
         }
     }
 
-    public void addYears(String... years) {
-        if(years != null && years.length > 0){
-            this.years = Arrays.asList(years);
-        }
+    public void setYear(String year) {
+        this.year = year;
     }
     public int getStart() {
         return start;
@@ -54,5 +49,21 @@ public class Filter {
 
     public void setStart(int start) {
         this.start = start;
+    }
+
+    public String getExpandLevel() {
+        return expandLevel;
+    }
+
+    public void setExpandLevel(String expandLevel) {
+        this.expandLevel = expandLevel;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public String getFirstlevel() {
+        return levels == null ? null : levels.get(0);
     }
 }

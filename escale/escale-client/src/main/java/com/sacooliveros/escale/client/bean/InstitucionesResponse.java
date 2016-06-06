@@ -12,16 +12,16 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "instituciones")
-public class InstitutesResponse implements Serializable{
+public class InstitucionesResponse implements Serializable{
 
     @XmlElement(name = "items")
-    private List<Institute> items;
+    private List<Institucion> items;
 
-    public List<Institute> getItems() {
+    public List<Institucion> getItems() {
         return items;
     }
 
-    public void setItems(List<Institute> items) {
+    public void setItems(List<Institucion> items) {
         this.items = items;
     }
 }
