@@ -1,4 +1,4 @@
-package com.sacooliveros.escale.client;
+package com.sacooliveros.escale.client.rest;
 
 import com.sun.jersey.api.client.WebResource;
 

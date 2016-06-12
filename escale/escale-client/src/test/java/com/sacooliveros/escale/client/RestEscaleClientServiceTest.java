@@ -5,11 +5,14 @@
  */
 package com.sacooliveros.escale.client;
 
-import com.sacooliveros.escale.client.bean.Institucion;
-import com.sacooliveros.escale.client.bean.InstitucionResponse;
-import com.sacooliveros.escale.client.bean.InstitucionesResponse;
+import com.sacooliveros.client.rest.filters.logging.JerseyLogginFilter;
+import com.sacooliveros.escale.client.dto.Institucion;
+import com.sacooliveros.escale.client.dto.InstitucionResponse;
+import com.sacooliveros.escale.client.dto.InstitucionesResponse;
 import com.sacooliveros.escale.client.exception.EscaleConnectTimeoutException;
 import com.sacooliveros.escale.client.exception.EscaleReadTimeoutException;
+import com.sacooliveros.escale.client.rest.RestEscaleClientService;
+import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import org.junit.*;
@@ -36,7 +39,9 @@ public class RestEscaleClientServiceTest {
     public void setUp() {
         clientService = new RestEscaleClientService();
         clientService.setConfig(new EscaleClientServiceConfig());
-        clientService.setClient(new ClientMock());
+        clientService.setClient(new Client());
+        clientService.addFilter(new JerseyLogginFilter());
+
     }
 
     @After
@@ -84,7 +89,7 @@ public class RestEscaleClientServiceTest {
         int count = clientService.getInstitutesCount(filter);
 
         System.out.println("cantidad:"+count);
-        assertTrue(count == 106258);
+        assertTrue(count > 1);
     }
 
     @Test
@@ -178,10 +183,10 @@ public class RestEscaleClientServiceTest {
         clientService.setConfig(config);
 
         filter.setExpandLevel("5");
-        filter.setYear("2005");
-        filter.addLevels("A2");
+        filter.setYear("2014");
+        filter.addLevels("A");
 
-        InstitucionResponse response = clientService.getInstituteDetails("0834689", filter);
+        InstitucionResponse response = clientService.getInstituteDetails("1625771", filter);
 
         System.out.println("resultado:"+response);
         assertNotNull(response);

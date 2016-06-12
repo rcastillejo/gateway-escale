@@ -1,13 +1,17 @@
-package com.sacooliveros.escale.client;
+package com.sacooliveros.escale.client.rest;
 
-import com.sacooliveros.escale.client.bean.InstitucionResponse;
-import com.sacooliveros.escale.client.bean.InstitucionesResponse;
+import com.sacooliveros.escale.client.EscaleClientService;
+import com.sacooliveros.escale.client.EscaleClientServiceConfig;
+import com.sacooliveros.escale.client.Filter;
+import com.sacooliveros.escale.client.dto.InstitucionResponse;
+import com.sacooliveros.escale.client.dto.InstitucionesResponse;
 import com.sacooliveros.escale.client.exception.EscaleConnectTimeoutException;
 import com.sacooliveros.escale.client.exception.EscaleReadTimeoutException;
 import com.sacooliveros.escale.client.exception.ResponseMalformatException;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.filter.ClientFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +31,10 @@ public class RestEscaleClientService implements EscaleClientService {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public void addFilter(ClientFilter filter) {
+        this.client.addFilter(filter);
     }
 
     public void setConfig(EscaleClientServiceConfig config) {
@@ -67,7 +75,7 @@ public class RestEscaleClientService implements EscaleClientService {
             LOGGER.debug("Consultando las instituciones [" + filter + "]");
             WebResource service = client.resource(config.getUrl())
                     .path(config.getPathInstitutes());
-            if(filter == null){
+            if(filter != null){
                 service = new WebResourceBuilder(service)
                         .addLevelsParam(filter.getLevels())
                         .addStatesParam(filter.getStates())
@@ -94,7 +102,7 @@ public class RestEscaleClientService implements EscaleClientService {
             LOGGER.debug("Consultando las instituciones [codigo=" + codigo + ", filtro=" + filter + "]");
             WebResource service = client.resource(config.getUrl())
                     .path(MessageFormat.format(config.getPathInstituteDetail(), codigo));
-            if(filter == null){
+            if(filter != null){
                 service = new WebResourceBuilder(service)
                         .addExpandLevelParam( filter.getExpandLevel())
                         .addYearParam( filter.getYear())

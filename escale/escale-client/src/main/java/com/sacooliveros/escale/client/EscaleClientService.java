@@ -1,7 +1,7 @@
 package com.sacooliveros.escale.client;
 
-import com.sacooliveros.escale.client.bean.InstitucionResponse;
-import com.sacooliveros.escale.client.bean.InstitucionesResponse;
+import com.sacooliveros.escale.client.dto.InstitucionResponse;
+import com.sacooliveros.escale.client.dto.InstitucionesResponse;
 
 
 /**

@@ -32,23 +32,23 @@
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%-10t] (%c{2}) %m - [linea:%L]%n" />
         </layout>
-    </appender>    
-     
-    <logger name="com.sacooliveros.gepsac.dao" additivity="false">
+    </appender>
+
+    <logger name="com.sacooliveros.escale" additivity="false">
         <level value="TRACE" />
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="TRAZADO"/>
     </logger>
-     
-    <logger name="com.sacooliveros.gepsac.service.experto" additivity="false">
+
+    <logger name="com.sacooliveros.client.rest.filters" additivity="false">
         <level value="TRACE" />
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="TRAZADO"/>
     </logger>
 
     <root>
-        <level value="ERROR" />   
-        <appender-ref ref="CONSOLE" />   
+        <level value="ERROR" />
+        <appender-ref ref="CONSOLE" />
         <appender-ref ref="ERROR" />
     </root>
     

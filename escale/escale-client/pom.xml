@@ -21,6 +21,13 @@
     </properties>
     
     <dependencies>
+        <!-- Dependencias Rest Filtro-->
+        <dependency>
+            <groupId>com.sacooliveros.client.rest</groupId>
+            <artifactId>rest-filters</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
         <!--Dependencias Rest-->
         <dependency>
             <groupId>asm</groupId>
