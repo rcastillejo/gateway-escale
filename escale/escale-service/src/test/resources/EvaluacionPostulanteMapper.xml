@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sacooliveros.gepsac.dao.mybatis.mapper.EvaluacionPostulanteMapper" >
+    
+    <resultMap id="recordResultMap" type="com.sacooliveros.gepsac.model.experto.EvaluacionPostulante" >
+        <id column="cod_plan" property="codigo" jdbcType="VARCHAR" />
+        <result column="anio" property="anio" jdbcType="VARCHAR" />
+        <result column="fec_registro" property="fecRegistro" jdbcType="DATE" />
+        <result column="fec_inicio" property="fecInicio" jdbcType="DATE" />
+        <result column="fec_fin" property="fecFin" jdbcType="DATE" />
+        <result column="cod_estado" property="estado.codigo" jdbcType="VARCHAR" />
+    </resultMap>
+       
+    <select id="query" resultMap="recordResultMap">
+        SELECT
+            cod_alumno,
+            genero,
+            edad,
+            contextura,
+            altura,
+            tipo_familia,
+            orden_nacimiento,
+            num_hnos,
+            nivel_escolar,
+            grado_escolar,
+            promedio_escolar,
+            nro_cambio_colegio,
+            religion,
+            nacionalidad,
+            distrito,
+            provincia,
+            departamento,
+            cod_perfil 
+        FROM 
+            tp_alumno_evaluado
+    </select>
+  
+    <select id="get" resultMap="recordResultMap">
+        Select 
+            cod_alumno,
+            genero,
+            edad,
+            contextura,
+            altura,
+            tipo_familia,
+            orden_nacimiento,
+            num_hnos,
+            nivel_escolar,
+            grado_escolar,
+            promedio_escolar,
+            nro_cambio_colegio,
+            religion,
+            nacionalidad,
+            distrito,
+            provincia,
+            departamento,
+            cod_perfil 
+        from 
+            tp_alumno_evaluado 
+        where
+            cod_alumno=#{codigo}
+    </select>
+  
+    <insert id="insert">
+        Insert into tp_evaluacion_postulante 
+            (cod_evaluacion, fec_evaluacion, cod_alumno, cod_estado)
+        values
+            (#{codigo},#{fechaEvaluacion},#{alumno.codigo},#{estado.codigo})
+    </insert>
+  
+  
+    <insert id="insertPerfiles">
+        Insert into tp_perfil_evaluacion 
+            (cod_evaluacion, indice, cod_perfil, probabilidad, seleccionado)
+        values
+            (#{codigoEvaluacion}, #{indice}, #{perfil.codigo}, #{probabilidad}, #{seleccionado})
+    </insert>
+  
+    <update id="update">
+        Update 
+            tp_evaluacion_postulante 
+        Set
+            fec_evaluacion = #{fechaEvaluacion}
+        Where
+            cod_evaluacion=#{codigo}
+    </update> 
+    
+    <insert id="updatePerfiles">        
+        Update 
+            tp_perfil_evaluacion 
+        Set
+            cod_perfil = #{perfil.codigo},
+            probabilidad = #{probabilidad},
+            seleccionado = #{seleccionado)
+        Where
+            cod_evaluacion = #{codigoEvaluacion} and indice = #{indice}
+    </insert>
+    
+</mapper>

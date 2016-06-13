@@ -1,28 +1,33 @@
 package com.sacooliveros.escale.bean;
 
-import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  * Created by Ricardo on 04/06/2016.
  */
 public class Colegio {
 
-    private String codigoModular;
+
+    private String codigo;
     private String codigoLocal;
     private String nombre;
     private String codigoNivel;
     private String gestion;
     private String direccion;
-    private String ubigeo;
+    private String ubigueo;
     private String latitud;
-    private String longituf;
+    private String longitud;
 
-    public String getCodigoModular() {
-        return codigoModular;
+
+    public String getCodigo() {
+        return codigo;
     }
 
-    public void setCodigoModular(String codigoModular) {
-        this.codigoModular = codigoModular;
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public String getCodigoLocal() {
@@ -65,12 +70,12 @@ public class Colegio {
         this.direccion = direccion;
     }
 
-    public String getUbigeo() {
-        return ubigeo;
+    public String getUbigueo() {
+        return ubigueo;
     }
 
-    public void setUbigeo(String ubigeo) {
-        this.ubigeo = ubigeo;
+    public void setUbigueo(String ubigueo) {
+        this.ubigueo = ubigueo;
     }
 
     public String getLatitud() {
@@ -81,11 +86,26 @@ public class Colegio {
         this.latitud = latitud;
     }
 
-    public String getLongituf() {
-        return longituf;
+    public String getLongitud() {
+        return longitud;
     }
 
-    public void setLongituf(String longituf) {
-        this.longituf = longituf;
+    public void setLongitud(String longitud) {
+        this.longitud = longitud;
+    }
+
+    @Override
+    public String toString() {
+        return "Colegio{" +
+                "codigo='" + codigo + '\'' +
+                ", codigoLocal='" + codigoLocal + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", codigoNivel='" + codigoNivel + '\'' +
+                ", gestion='" + gestion + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", ubigueo='" + ubigueo + '\'' +
+                ", latitud='" + latitud + '\'' +
+                ", longitud='" + longitud + '\'' +
+                '}';
     }
 }

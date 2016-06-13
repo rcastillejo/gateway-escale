@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.sacooliveros.escale.service</groupId>
-    <artifactId>escale-transform</artifactId>
+    <artifactId>escale-dto</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 	
@@ -13,16 +13,5 @@
     </properties>
     
     <dependencies>
-        <dependency>
-            <groupId>com.sacooliveros.escale.bean</groupId>
-            <artifactId>escale-bean</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.sacooliveros.escale.service</groupId>
-            <artifactId>escale-dto</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 </project>
