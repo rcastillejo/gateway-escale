@@ -28,7 +28,7 @@ public class InstitucionesResponse implements Serializable{
     @Override
     public String toString() {
         return "InstitucionesResponse{" +
-                "items=" + items +
+                "items=" + (items == null ? 0 : items.size()) +
                 '}';
     }
 }

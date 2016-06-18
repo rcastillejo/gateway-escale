@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.sacooliveros.escale.dao;
+package com.sacooliveros.escale.client;
 
-import com.sacooliveros.escale.client.Filter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

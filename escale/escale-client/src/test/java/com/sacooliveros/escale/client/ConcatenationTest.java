@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.sacooliveros.escale.dao;
+package com.sacooliveros.escale.client;
 
-import com.sacooliveros.escale.client.Concatenation;
 import org.hamcrest.core.Is;
 import org.junit.After;
 import org.junit.Before;
@@ -76,7 +75,7 @@ public class ConcatenationTest {
         int blockSize = 5;
         Concatenation concatenation = new Concatenation(totalSize, blockSize);
 
-        concatenation.concatenate();
+        concatenation.nextBlock();
 
         assertThat(concatenation.hasMore(), Is.is(Boolean.TRUE));
         assertThat(concatenation.getCurrentBlockCount(), Is.is(1));
@@ -89,8 +88,8 @@ public class ConcatenationTest {
         int blockSize = 5;
         Concatenation concatenation = new Concatenation(totalSize, blockSize);
 
-        concatenation.concatenate();
-        concatenation.concatenate();
+        concatenation.nextBlock();
+        concatenation.nextBlock();
 
         assertThat(concatenation.hasMore(), Is.is(Boolean.FALSE));
         assertThat(concatenation.getCurrentBlockCount(), Is.is(2));
@@ -103,9 +102,9 @@ public class ConcatenationTest {
         int blockSize = 5;
         Concatenation concatenation = new Concatenation(totalSize, blockSize);
 
-        concatenation.concatenate();
-        concatenation.concatenate();
-        concatenation.concatenate();
+        concatenation.nextBlock();
+        concatenation.nextBlock();
+        concatenation.nextBlock();
 
         assertThat(concatenation.hasMore(), Is.is(Boolean.FALSE));
         assertThat(concatenation.getCurrentBlockCount(), Is.is(3));
@@ -129,7 +128,7 @@ public class ConcatenationTest {
         int blockSize = 10;
         Concatenation concatenation = new Concatenation(totalSize, blockSize);
 
-        concatenation.concatenate();
+        concatenation.nextBlock();
 
         assertThat(concatenation.hasMore(), Is.is(Boolean.FALSE));
         assertThat(concatenation.getCurrentBlockCount(), Is.is(1));
@@ -153,7 +152,7 @@ public class ConcatenationTest {
         int blockSize = 3;
         Concatenation concatenation = new Concatenation(totalSize, blockSize);
 
-        concatenation.concatenate();
+        concatenation.nextBlock();
 
         assertThat(concatenation.hasMore(), Is.is(Boolean.TRUE));
         assertThat(concatenation.getCurrentBlockCount(), Is.is(1));
@@ -166,10 +165,10 @@ public class ConcatenationTest {
         int blockSize = 3;
         Concatenation concatenation = new Concatenation(totalSize, blockSize);
 
-        concatenation.concatenate();
-        concatenation.concatenate();
-        concatenation.concatenate();
-        concatenation.concatenate();
+        concatenation.nextBlock();
+        concatenation.nextBlock();
+        concatenation.nextBlock();
+        concatenation.nextBlock();
 
         assertThat(concatenation.hasMore(), Is.is(Boolean.FALSE));
         assertThat(concatenation.getCurrentBlockCount(), Is.is(4));

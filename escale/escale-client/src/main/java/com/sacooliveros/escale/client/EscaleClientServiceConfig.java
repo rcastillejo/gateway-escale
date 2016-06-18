@@ -12,7 +12,15 @@ public class EscaleClientServiceConfig {
     private String pathInstitutes;
     private String pathInstituteDetail;
     private ClientConfig restConfig;
+    private int institutesBlock;
 
+    public int getInstitutesBlock() {
+        return institutesBlock;
+    }
+
+    public void setInstitutesBlock(int institutesBlock) {
+        this.institutesBlock = institutesBlock;
+    }
 
     public String getUrl() {
         return url;

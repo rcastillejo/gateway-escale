@@ -3,30 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.sacooliveros.escale.dao;
+package com.sacooliveros.escale.client;
 
-import com.sacooliveros.client.rest.filters.logging.JerseyLogginFilter;
-import com.sacooliveros.escale.client.EscaleClientServiceConfig;
-import com.sacooliveros.escale.client.Filter;
 import com.sacooliveros.escale.client.dto.Institucion;
 import com.sacooliveros.escale.client.dto.InstitucionResponse;
 import com.sacooliveros.escale.client.dto.InstitucionesResponse;
 import com.sacooliveros.escale.client.exception.EscaleConnectTimeoutException;
 import com.sacooliveros.escale.client.exception.EscaleReadTimeoutException;
 import com.sacooliveros.escale.client.rest.RestEscaleClientService;
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import org.junit.*;
-
-import static org.junit.Assert.*;
-
 import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static org.junit.Assert.*;
+
 /**
- *
  * @author Ricardo
  */
 public class RestEscaleClientServiceTest {
@@ -39,10 +33,10 @@ public class RestEscaleClientServiceTest {
 
     @Before
     public void setUp() {
-        clientService = new RestEscaleClientService();
-        clientService.setConfig(new EscaleClientServiceConfig());
-        clientService.setClient(new Client());
-        clientService.addFilter(new JerseyLogginFilter());
+        EscaleClientServiceConfig config = new EscaleClientServiceConfig();
+        config.setInstitutesBlock(50);
+
+        clientService = RestEscaleClientService.newInstance(config);
 
     }
 
@@ -51,10 +45,10 @@ public class RestEscaleClientServiceTest {
     }
 
     @Test
-    public void testInstituteCountWithoutFilterRetrieveGreaterThanZero(){
+    public void testInstituteCountWithoutFilterRetrieveGreaterThanZero() {
 
         Filter filter = new Filter();
-        ClientConfig clientConfig= new DefaultClientConfig();
+        ClientConfig clientConfig = new DefaultClientConfig();
         EscaleClientServiceConfig config = new EscaleClientServiceConfig();
 
         clientConfig.getProperties().put(ClientConfig.PROPERTY_READ_TIMEOUT, 1000);
@@ -66,16 +60,17 @@ public class RestEscaleClientServiceTest {
 
         int count = clientService.getInstitutesCount(filter);
 
-        System.out.println("cantidad:"+count);
+        System.out.println("cantidad:" + count);
         assertTrue(count > 0);
+        assertTrue(clientService.hasInstitutes());
     }
 
 
     @Test
-    public void testInstituteCountWithLevelsRetrieveGreaterThanZero(){
+    public void testInstituteCountWithLevelsRetrieveGreaterThanZero() {
 
         Filter filter = new Filter();
-        ClientConfig clientConfig= new DefaultClientConfig();
+        ClientConfig clientConfig = new DefaultClientConfig();
         EscaleClientServiceConfig config = new EscaleClientServiceConfig();
 
         clientConfig.getProperties().put(ClientConfig.PROPERTY_READ_TIMEOUT, 1000);
@@ -90,15 +85,15 @@ public class RestEscaleClientServiceTest {
 
         int count = clientService.getInstitutesCount(filter);
 
-        System.out.println("cantidad:"+count);
+        System.out.println("cantidad:" + count);
         assertTrue(count > 1);
     }
 
     @Test
-    public void testInstituteCountThrowErrorIfIsConnTimeout(){
+    public void testInstituteCountThrowErrorIfIsConnTimeout() {
 
         Filter filter = new Filter();
-        ClientConfig clientConfig= new DefaultClientConfig();
+        ClientConfig clientConfig = new DefaultClientConfig();
         EscaleClientServiceConfig config = new EscaleClientServiceConfig();
 
         clientConfig.getProperties().put(ClientConfig.PROPERTY_CONNECT_TIMEOUT, 3000);
@@ -119,10 +114,10 @@ public class RestEscaleClientServiceTest {
 
     @Ignore
     @Test
-    public void testInstituteCountThrowErrorIfIsReadTimeout(){
+    public void testInstituteCountThrowErrorIfIsReadTimeout() {
 
         Filter filter = new Filter();
-        ClientConfig clientConfig= new DefaultClientConfig();
+        ClientConfig clientConfig = new DefaultClientConfig();
         EscaleClientServiceConfig config = new EscaleClientServiceConfig();
 
         clientConfig.getProperties().put(DefaultClientConfig.PROPERTY_READ_TIMEOUT, 10);
@@ -142,10 +137,10 @@ public class RestEscaleClientServiceTest {
     }
 
     @Test
-    public void testInstitutesRetrieveSuccess(){
+    public void testInstitutesRetrieveSuccess() {
 
         Filter filter = new Filter();
-        ClientConfig clientConfig= new DefaultClientConfig();
+        ClientConfig clientConfig = new DefaultClientConfig();
         EscaleClientServiceConfig config = new EscaleClientServiceConfig();
 
         clientConfig.getProperties().put(ClientConfig.PROPERTY_READ_TIMEOUT, 10);
@@ -161,20 +156,20 @@ public class RestEscaleClientServiceTest {
 
         InstitucionesResponse response = clientService.getInstitutes(filter);
 
-        for (Institucion institute: response.getItems()) {
-            System.out.println("institute:"+institute);
+        for (Institucion institute : response.getItems()) {
+            System.out.println("institute:" + institute);
         }
 
-        System.out.println("resultado:"+response);
-        System.out.println("resultado tamanio:"+response.getItems().size());
+        System.out.println("resultado:" + response);
+        System.out.println("resultado tamanio:" + response.getItems().size());
         assertNotNull(response);
     }
 
     @Test
-    public void testInstituteDetailsInicialRetrieveSuccess(){
+    public void testInstituteDetailsInicialRetrieveSuccess() {
 
         Filter filter = new Filter();
-        ClientConfig clientConfig= new DefaultClientConfig();
+        ClientConfig clientConfig = new DefaultClientConfig();
         EscaleClientServiceConfig config = new EscaleClientServiceConfig();
 
         clientConfig.getProperties().put(ClientConfig.PROPERTY_READ_TIMEOUT, 10);
@@ -190,16 +185,16 @@ public class RestEscaleClientServiceTest {
 
         InstitucionResponse response = clientService.getInstituteDetails("1625771", filter);
 
-        System.out.println("resultado:"+response);
+        System.out.println("resultado:" + response);
 
         assertNotNull(response.getInicial());
     }
 
     @Test
-    public void testInstituteDetailsPrimariaRetrieveSuccess(){
+    public void testInstituteDetailsPrimariaRetrieveSuccess() {
 
         Filter filter = new Filter();
-        ClientConfig clientConfig= new DefaultClientConfig();
+        ClientConfig clientConfig = new DefaultClientConfig();
         EscaleClientServiceConfig config = new EscaleClientServiceConfig();
 
         clientConfig.getProperties().put(ClientConfig.PROPERTY_READ_TIMEOUT, 10);
@@ -215,17 +210,17 @@ public class RestEscaleClientServiceTest {
 
         InstitucionResponse response = clientService.getInstituteDetails("1238179", filter);
 
-        System.out.println("resultado:"+response);
+        System.out.println("resultado:" + response);
 
         assertNotNull(response.getPrimaria());
     }
 
 
     @Test
-    public void testInstituteDetailsSecundariaRetrieveSuccess(){
+    public void testInstituteDetailsSecundariaRetrieveSuccess() {
 
         Filter filter = new Filter();
-        ClientConfig clientConfig= new DefaultClientConfig();
+        ClientConfig clientConfig = new DefaultClientConfig();
         EscaleClientServiceConfig config = new EscaleClientServiceConfig();
 
         clientConfig.getProperties().put(ClientConfig.PROPERTY_READ_TIMEOUT, 10);
@@ -241,8 +236,41 @@ public class RestEscaleClientServiceTest {
 
         InstitucionResponse response = clientService.getInstituteDetails("0466730", filter);
 
-        System.out.println("resultado:"+response);
+        System.out.println("resultado:" + response);
 
         assertNotNull(response.getSecundaria());
+    }
+
+    @Ignore
+    @Test
+    public void testInstitutesPagintationRetrieveSuccess() {
+
+        Filter filter = new Filter();
+        ClientConfig clientConfig = new DefaultClientConfig();
+        EscaleClientServiceConfig config = new EscaleClientServiceConfig();
+
+        clientConfig.getProperties().put(ClientConfig.PROPERTY_READ_TIMEOUT, 10);
+        clientConfig.getProperties().put(ClientConfig.PROPERTY_CONNECT_TIMEOUT, 10);
+
+        config.setUrl("http://escale.minedu.gob.pe/padron/rest/instituciones");
+        config.setPathCount("cuenta");
+        config.setPathInstitutes("");
+        clientService.setConfig(config);
+
+        filter.addLevels("A1", "A2", "A3", "A5", "B0", "F0");
+        filter.addStates("1");
+
+
+        int count = clientService.getInstitutesCount(filter);
+
+        int c = 0;
+
+        while(clientService.hasInstitutes()){
+            InstitucionesResponse response = clientService.getInstitutes(filter);
+            c += response.getItems().size();
+        }
+
+        System.out.println("count:" + count + " vs c:" + c);
+        assertEquals(c, count);
     }
 }

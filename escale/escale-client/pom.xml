@@ -60,5 +60,10 @@
             <artifactId>jersey-core</artifactId>
             <version>1.19</version>
         </dependency>
+        <dependency>
+            <groupId>com.sacooliveros.escale.base</groupId>
+            <artifactId>escale-base</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

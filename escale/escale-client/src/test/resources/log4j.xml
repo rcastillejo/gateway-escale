@@ -23,8 +23,26 @@
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%-10t] (%c{2}) %m - [linea:%L]%n" />
         </layout>
-    </appender>    
-    
+    </appender>
+
+    <appender name="PERFORMANCE" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="performance.log" />
+        <param name="DatePattern" value="'.'yyyyMMdd" />
+        <param name="Append" value="true" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%-10t] (%c{2}) %m - [linea:%L]%n" />
+        </layout>
+    </appender>
+
+    <appender name="TRANSACTION" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="transaction.log" />
+        <param name="DatePattern" value="'.'yyyyMMdd" />
+        <param name="Append" value="true" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%-10t] (%c{2}) %m - [linea:%L]%n" />
+        </layout>
+    </appender>
+
     <appender name="ERROR" class="org.apache.log4j.DailyRollingFileAppender">       
         <param name="File" value="error.log" />
         <param name="DatePattern" value="'.'yyyyMMdd" />
@@ -36,14 +54,29 @@
 
     <logger name="com.sacooliveros.escale" additivity="false">
         <level value="TRACE" />
+    </logger>
+
+    <logger name="com.sacooliveros.escale.client" additivity="false">
+        <level value="TRACE" />
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="TRAZADO"/>
     </logger>
 
+
+    <logger name="com.sacooliveros.escale.log.Logp" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="PERFORMANCE" />
+    </logger>
+
+
+    <logger name="com.sacooliveros.escale.log.Logt" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="TRANSACTION" />
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
     <logger name="com.sacooliveros.client.rest.filters" additivity="false">
         <level value="TRACE" />
-        <appender-ref ref="CONSOLE" />
-        <appender-ref ref="TRAZADO"/>
     </logger>
 
     <root>

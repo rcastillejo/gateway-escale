@@ -10,10 +10,14 @@ public final class Concatenation {
     private int currentBlockSize;
     private int currentBlockCount;
 
+
+    public Concatenation(int blockSize) {
+        this.blockSize = blockSize;
+    }
+
     public Concatenation(int totalSize, int blockSize) {
         this.totalSize = totalSize;
         this.blockSize = blockSize;
-        validate();
         calcutate();
     }
 
@@ -30,6 +34,7 @@ public final class Concatenation {
     }
 
     private int calcutate() {
+        validate();
         blockCount = totalSize / blockSize;
         if (totalSize % blockSize > 0) {
             blockCount++;
@@ -38,7 +43,7 @@ public final class Concatenation {
     }
 
 
-    public void concatenate() {
+    public void nextBlock() {
         currentBlockSize += blockSize;
         currentBlockCount++;
     }
@@ -47,12 +52,9 @@ public final class Concatenation {
         return currentBlockCount < blockCount;
     }
 
-    public int getTotalSize() {
-        return totalSize;
-    }
-
-    public int getBlockSize() {
-        return blockSize;
+    public void setTotalSizeAndCalculate(int totalSize) {
+        this.totalSize = totalSize;
+        calcutate();
     }
 
     public int getCurrentBlockSize() {
@@ -65,5 +67,16 @@ public final class Concatenation {
 
     public int getCurrentBlockCount() {
         return currentBlockCount;
+    }
+
+    @Override
+    public String toString() {
+        return "Concatenation{" +
+                "totalSize=" + totalSize +
+                ", blockSize=" + blockSize +
+                ", blockCount=" + blockCount +
+                ", currentBlockSize=" + currentBlockSize +
+                ", currentBlockCount=" + currentBlockCount +
+                '}';
     }
 }

@@ -1,6 +1,7 @@
 package com.sacooliveros.escale.client.rest;
 
 import com.sacooliveros.client.rest.filters.logging.JerseyLogginFilter;
+import com.sacooliveros.escale.client.Concatenation;
 import com.sacooliveros.escale.client.EscaleClientServiceConfig;
 import com.sacooliveros.escale.client.Filter;
 import com.sacooliveros.escale.client.exception.EscaleReadTimeoutException;
@@ -9,6 +10,8 @@ import com.sacooliveros.escale.client.EscaleClientService;
 import com.sacooliveros.escale.client.dto.InstitucionResponse;
 import com.sacooliveros.escale.client.dto.InstitucionesResponse;
 import com.sacooliveros.escale.client.exception.EscaleConnectTimeoutException;
+import com.sacooliveros.escale.log.Logp;
+import com.sacooliveros.escale.log.Logt;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.WebResource;
@@ -29,13 +32,18 @@ public class RestEscaleClientService implements EscaleClientService {
 
     private EscaleClientServiceConfig config;
     private Client client;
+    private Concatenation concatenation;
 
     public static RestEscaleClientService newInstance(EscaleClientServiceConfig config){
-        RestEscaleClientService clientService = new RestEscaleClientService();
-        clientService.setConfig(config);
+        RestEscaleClientService clientService = new RestEscaleClientService(config);
         clientService.setClient(new Client());
         clientService.addFilter(new JerseyLogginFilter());
         return clientService;
+    }
+
+    public RestEscaleClientService(EscaleClientServiceConfig config) {
+        this.config = config;
+        this.concatenation = new Concatenation(config.getInstitutesBlock());
     }
 
     public void setClient(Client client) {
@@ -62,9 +70,14 @@ public class RestEscaleClientService implements EscaleClientService {
                         .addStatesParam(filter.getStates())
                         .getWebResource();
             }
+            long init = System.currentTimeMillis();
             String count = service.accept(MediaType.WILDCARD).get(String.class);
+            Logp.show("COUNT", init);
             LOGGER.debug("Cantidad de instituciones recibidas [" + count + "]");
-            return Integer.parseInt(count);
+            int total = Integer.parseInt(count);
+            concatenation.setTotalSizeAndCalculate(total);
+            LOGGER.trace("Paginacion calculada [" + concatenation+ "]");
+            return total;
         } catch (NumberFormatException e) {
             throw new ResponseMalformatException("Error al leer la cantidad de instituciones", e);
         } catch (ClientHandlerException e) {
@@ -78,21 +91,31 @@ public class RestEscaleClientService implements EscaleClientService {
         }
     }
 
+    public boolean hasInstitutes(){
+        return concatenation.hasMore();
+    }
+
     @Override
     public InstitucionesResponse getInstitutes(Filter filter) {
         try {
-            LOGGER.debug("Consultando las instituciones [" + filter + "]");
             WebResource service = client.resource(config.getUrl())
                     .path(config.getPathInstitutes());
             if(filter != null){
+                filter.setStart(concatenation.getCurrentBlockSize());
                 service = new WebResourceBuilder(service)
                         .addLevelsParam(filter.getLevels())
                         .addStatesParam(filter.getStates())
                         .addStartParam(filter.getStart())
                         .getWebResource();
+                LOGGER.debug("Consultando las instituciones [" + filter + "]");
+                LOGGER.trace("Paginacion de instituciones  [" + concatenation+ "]");
             }
+            long init = System.currentTimeMillis();
             InstitucionesResponse response = service.accept(MediaType.APPLICATION_XML_TYPE).get(InstitucionesResponse.class);
+            Logp.show("INSTITUTES", init);
             LOGGER.debug("Resultado de instituciones [" + response + "]");
+            concatenation.nextBlock();
+            LOGGER.trace("Paginacion de instituciones recalculada [" + concatenation+ "]");
             return response;
         } catch (ClientHandlerException e) {
             if (e.getCause() instanceof SocketTimeoutException) {
@@ -118,7 +141,9 @@ public class RestEscaleClientService implements EscaleClientService {
                         .addLevelParam( filter.getFirstlevel())
                         .getWebResource();
             }
+            long init = System.currentTimeMillis();
             InstitucionResponse response = service.accept(MediaType.APPLICATION_XML_TYPE).get(InstitucionResponse.class);
+            Logp.show("DETAIL", init);
             LOGGER.debug("Resultado de institucion [" + codigo + "=" + response + "]");
             return response;
         } catch (ClientHandlerException e) {
