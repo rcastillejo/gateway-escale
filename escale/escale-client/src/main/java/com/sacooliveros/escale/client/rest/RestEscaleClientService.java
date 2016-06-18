@@ -1,12 +1,13 @@
 package com.sacooliveros.escale.client.rest;
 
+import com.sacooliveros.client.rest.filters.logging.JerseyLogginFilter;
 import com.sacooliveros.escale.client.EscaleClientServiceConfig;
 import com.sacooliveros.escale.client.Filter;
 import com.sacooliveros.escale.client.exception.EscaleReadTimeoutException;
 import com.sacooliveros.escale.client.exception.ResponseMalformatException;
 import com.sacooliveros.escale.client.EscaleClientService;
-import com.sacooliveros.escale.dao.dto.InstitucionResponse;
-import com.sacooliveros.escale.dao.dto.InstitucionesResponse;
+import com.sacooliveros.escale.client.dto.InstitucionResponse;
+import com.sacooliveros.escale.client.dto.InstitucionesResponse;
 import com.sacooliveros.escale.client.exception.EscaleConnectTimeoutException;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
@@ -28,6 +29,14 @@ public class RestEscaleClientService implements EscaleClientService {
 
     private EscaleClientServiceConfig config;
     private Client client;
+
+    public static RestEscaleClientService newInstance(EscaleClientServiceConfig config){
+        RestEscaleClientService clientService = new RestEscaleClientService();
+        clientService.setConfig(config);
+        clientService.setClient(new Client());
+        clientService.addFilter(new JerseyLogginFilter());
+        return clientService;
+    }
 
     public void setClient(Client client) {
         this.client = client;

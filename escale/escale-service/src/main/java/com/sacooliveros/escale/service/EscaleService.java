@@ -6,8 +6,10 @@ import com.sacooliveros.escale.dao.ColegioDAO;
 import com.sacooliveros.escale.client.EscaleClientService;
 import com.sacooliveros.escale.mapper.EscaleMapper;
 import com.sacooliveros.escale.client.Filter;
-import com.sacooliveros.escale.dao.dto.InstitucionResponse;
-import com.sacooliveros.escale.dao.dto.InstitucionesResponse;
+import com.sacooliveros.escale.client.dto.InstitucionResponse;
+import com.sacooliveros.escale.client.dto.InstitucionesResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -15,7 +17,7 @@ import java.util.List;
  * Created by Ricardo on 12/06/2016.
  */
 public class EscaleService {
-
+    public static final Logger LOG = LoggerFactory.getLogger(EscaleService.class);
 
     private EscaleClientService client;
     private EscaleMapper escaleMapper;
@@ -36,7 +38,9 @@ public class EscaleService {
         InstitucionesResponse response;
 
         response = client.getInstitutes(filter);
+
         colegios = escaleMapper.mapFrom(response);
+
         return colegios;
     }
 
@@ -53,10 +57,10 @@ public class EscaleService {
         List<ColegioDetalle> colegioDetalle;
         InstitucionResponse response;
 
-        filter.addLevels(colegio.getCodigoNivel());
+        filter.addPrefixLevel(colegio.getCodigoNivel());
 
         response = client.getInstituteDetails(colegio.getCodigo(), filter);
-        colegioDetalle = escaleMapper.mapFrom(response);
+        colegioDetalle = escaleMapper.mapFrom(response, filter.getYear());
         return colegioDetalle;
     }
 
@@ -69,7 +73,7 @@ public class EscaleService {
     public void guardarColegio(Colegio colegio) {
 
         Colegio colegioEncontrado = colegiodao.get(colegio.getCodigo());
-
+        LOG.debug("colegio encontrado:"+colegioEncontrado);
         if(colegioEncontrado == null){
             colegiodao.insert(colegio);
         }else{

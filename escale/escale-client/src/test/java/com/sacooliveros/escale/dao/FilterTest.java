@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -42,6 +43,18 @@ public class FilterTest {
 
         filter.addLevels(new String[0]);
         assertTrue(filter.getLevels().isEmpty());
+
+
+    }
+
+    @Test
+    public void testSetPrefixLevelsRetrieve(){
+        Filter filter = new Filter();
+
+        filter.addPrefixLevel("B1");
+        assertEquals("B", filter.getLevels().get(0));
+
+
     }
 
 }

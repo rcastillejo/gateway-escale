@@ -24,4 +24,11 @@ public class InstitucionesResponse implements Serializable{
     public void setItems(List<Institucion> items) {
         this.items = items;
     }
+
+    @Override
+    public String toString() {
+        return "InstitucionesResponse{" +
+                "items=" + items +
+                '}';
+    }
 }

@@ -33,9 +33,9 @@ public class Institucion {
 
 
     @XmlElement(name = "nlatIE")
-    private String latitud;
+    private double latitud;
     @XmlElement(name = "nlongIE")
-    private String longitud;
+    private double longitud;
 
 
     public String getCodigo() {
@@ -86,19 +86,19 @@ public class Institucion {
         this.distrito = distrito;
     }
 
-    public String getLatitud() {
+    public double getLatitud() {
         return latitud;
     }
 
-    public void setLatitud(String latitud) {
+    public void setLatitud(double latitud) {
         this.latitud = latitud;
     }
 
-    public String getLongitud() {
+    public double getLongitud() {
         return longitud;
     }
 
-    public void setLongitud(String longitud) {
+    public void setLongitud(double longitud) {
         this.longitud = longitud;
     }
 

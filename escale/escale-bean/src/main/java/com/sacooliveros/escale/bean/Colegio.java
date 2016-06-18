@@ -19,8 +19,8 @@ public class Colegio {
     private String gestion;
     private String direccion;
     private String ubigueo;
-    private String latitud;
-    private String longitud;
+    private double latitud;
+    private double longitud;
 
     private List<ColegioDetalle> detalle;
 
@@ -88,19 +88,19 @@ public class Colegio {
         this.ubigueo = ubigueo;
     }
 
-    public String getLatitud() {
+    public double getLatitud() {
         return latitud;
     }
 
-    public void setLatitud(String latitud) {
+    public void setLatitud(double latitud) {
         this.latitud = latitud;
     }
 
-    public String getLongitud() {
+    public double getLongitud() {
         return longitud;
     }
 
-    public void setLongitud(String longitud) {
+    public void setLongitud(double longitud) {
         this.longitud = longitud;
     }
 

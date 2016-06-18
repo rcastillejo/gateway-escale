@@ -10,8 +10,8 @@
         <result column="gestion" property="gestion" jdbcType="VARCHAR" />
         <result column="direccion" property="direccion" jdbcType="VARCHAR" />
         <result column="ubigeo" property="ubigueo" jdbcType="VARCHAR" />
-        <result column="latitud" property="latitud" jdbcType="VARCHAR" />
-        <result column="altitud" property="longitud" jdbcType="VARCHAR" />
+        <result column="latitud" property="latitud" jdbcType="DOUBLE" />
+        <result column="longitud" property="longitud" jdbcType="DOUBLE" />
     </resultMap>
        
     <select id="get" resultMap="recordResultMap">
@@ -24,7 +24,7 @@
             direccion,
             ubigeo,
             latitud,
-            altitud
+            longitud
         FROM
             escale_colegios
         WHERE
@@ -34,7 +34,7 @@
   
     <insert id="insert">
         Insert into escale_colegios
-            (codmodular, codlocal, nombre, codnivel, gestion, direccion, ubigeo, latitud, altitud)
+            (codmodular, codlocal, nombre, codnivel, gestion, direccion, ubigeo, latitud, longitud)
         values
             (#{codigo},#{codigoLocal},#{nombre},#{codigoNivel},#{gestion},#{direccion},#{ubigueo},#{latitud},#{longitud})
     </insert>
@@ -50,12 +50,12 @@
         Update
             escale_colegios
         Set
-            codlocal = #{fechaEvaluacion},
+            codlocal = #{codigoLocal},
             nombre = #{nombre},
-            codigoNivel = #{codigoNivel},
+            codNivel = #{codigoNivel},
             gestion = #{gestion},
             direccion = #{direccion},
-            ubigueo = #{ubigueo},
+            ubigeo = #{ubigueo},
             latitud = #{latitud},
             longitud = #{longitud}
         Where

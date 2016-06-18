@@ -13,6 +13,7 @@ public class EscaleClientServiceConfig {
     private String pathInstituteDetail;
     private ClientConfig restConfig;
 
+
     public String getUrl() {
         return url;
     }

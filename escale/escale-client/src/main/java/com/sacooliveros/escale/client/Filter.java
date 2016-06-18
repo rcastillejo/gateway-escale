@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by rcastillejo on 02/06/2016.
  */
-public class Filter {
+public class Filter implements Cloneable{
     private List<String> levels;
     private List<String> states;
     private String year;
@@ -40,6 +40,13 @@ public class Filter {
         }
     }
 
+
+    public void addPrefixLevel(String level) {
+        if(level != null && !level.isEmpty()){
+            this.levels.add(level.substring(0,1));
+        }
+    }
+
     public void setYear(String year) {
         this.year = year;
     }
@@ -65,5 +72,21 @@ public class Filter {
 
     public String getFirstlevel() {
         return levels == null ? null : levels.get(0);
+    }
+
+    @Override
+    public Filter clone() throws CloneNotSupportedException {
+        return (Filter) super.clone();
+    }
+
+    @Override
+    public String toString() {
+        return "Filter{" +
+                "levels=" + levels +
+                ", states=" + states +
+                ", year='" + year + '\'' +
+                ", start=" + start +
+                ", expandLevel='" + expandLevel + '\'' +
+                '}';
     }
 }

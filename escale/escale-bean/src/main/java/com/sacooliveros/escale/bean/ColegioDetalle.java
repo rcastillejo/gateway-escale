@@ -8,12 +8,14 @@ public class ColegioDetalle {
 
 
     private String codigoColegio;
-    private int grado;
     private int anio;
+    private int grado;
     private int cantidad;
 
-    public ColegioDetalle(int anio, int cantidad) {
+    public ColegioDetalle(String codigoColegio, int anio, int grado, int cantidad) {
+        this.codigoColegio = codigoColegio;
         this.anio = anio;
+        this.grado = grado;
         this.cantidad = cantidad;
     }
 
