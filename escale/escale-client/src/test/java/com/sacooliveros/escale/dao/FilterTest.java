@@ -5,6 +5,7 @@
  */
 package com.sacooliveros.escale.dao;
 
+import com.sacooliveros.escale.client.Filter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

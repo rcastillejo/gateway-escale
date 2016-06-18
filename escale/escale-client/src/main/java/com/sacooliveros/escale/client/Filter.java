@@ -1,4 +1,4 @@
-package com.sacooliveros.escale.dao;
+package com.sacooliveros.escale.client;
 
 import java.util.ArrayList;
 import java.util.Arrays;

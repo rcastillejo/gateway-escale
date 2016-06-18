@@ -5,6 +5,7 @@
  */
 package com.sacooliveros.escale.dao;
 
+import com.sacooliveros.escale.client.Concatenation;
 import org.hamcrest.core.Is;
 import org.junit.After;
 import org.junit.Before;

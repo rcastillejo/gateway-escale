@@ -1,4 +1,4 @@
-package com.sacooliveros.escale.dao.exception;
+package com.sacooliveros.escale.client.exception;
 
 /**
  * Created by Ricardo on 04/06/2016.

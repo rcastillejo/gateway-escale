@@ -1,4 +1,4 @@
-package com.sacooliveros.escale.dao.dto;
+package com.sacooliveros.escale.client.dto;
 
 
 import javax.xml.bind.annotation.XmlAccessType;

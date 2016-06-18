@@ -1,4 +1,4 @@
-package com.sacooliveros.escale.dao;
+package com.sacooliveros.escale.client;
 
 import com.sun.jersey.api.client.config.ClientConfig;
 

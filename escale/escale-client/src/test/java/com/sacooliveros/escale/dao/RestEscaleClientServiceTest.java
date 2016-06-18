@@ -6,12 +6,14 @@
 package com.sacooliveros.escale.dao;
 
 import com.sacooliveros.client.rest.filters.logging.JerseyLogginFilter;
+import com.sacooliveros.escale.client.EscaleClientServiceConfig;
+import com.sacooliveros.escale.client.Filter;
 import com.sacooliveros.escale.dao.dto.Institucion;
 import com.sacooliveros.escale.dao.dto.InstitucionResponse;
 import com.sacooliveros.escale.dao.dto.InstitucionesResponse;
-import com.sacooliveros.escale.dao.exception.EscaleConnectTimeoutException;
-import com.sacooliveros.escale.dao.exception.EscaleReadTimeoutException;
-import com.sacooliveros.escale.dao.rest.RestEscaleClientService;
+import com.sacooliveros.escale.client.exception.EscaleConnectTimeoutException;
+import com.sacooliveros.escale.client.exception.EscaleReadTimeoutException;
+import com.sacooliveros.escale.client.rest.RestEscaleClientService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;

@@ -1,13 +1,13 @@
-package com.sacooliveros.escale.dao.rest;
+package com.sacooliveros.escale.client.rest;
 
-import com.sacooliveros.escale.dao.EscaleClientService;
-import com.sacooliveros.escale.dao.EscaleClientServiceConfig;
-import com.sacooliveros.escale.dao.Filter;
+import com.sacooliveros.escale.client.EscaleClientServiceConfig;
+import com.sacooliveros.escale.client.Filter;
+import com.sacooliveros.escale.client.exception.EscaleReadTimeoutException;
+import com.sacooliveros.escale.client.exception.ResponseMalformatException;
+import com.sacooliveros.escale.client.EscaleClientService;
 import com.sacooliveros.escale.dao.dto.InstitucionResponse;
 import com.sacooliveros.escale.dao.dto.InstitucionesResponse;
-import com.sacooliveros.escale.dao.exception.EscaleConnectTimeoutException;
-import com.sacooliveros.escale.dao.exception.EscaleReadTimeoutException;
-import com.sacooliveros.escale.dao.exception.ResponseMalformatException;
+import com.sacooliveros.escale.client.exception.EscaleConnectTimeoutException;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.WebResource;

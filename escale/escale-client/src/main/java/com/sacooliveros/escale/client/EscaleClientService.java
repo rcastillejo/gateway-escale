@@ -1,4 +1,4 @@
-package com.sacooliveros.escale.dao;
+package com.sacooliveros.escale.client;
 
 import com.sacooliveros.escale.dao.dto.InstitucionResponse;
 import com.sacooliveros.escale.dao.dto.InstitucionesResponse;

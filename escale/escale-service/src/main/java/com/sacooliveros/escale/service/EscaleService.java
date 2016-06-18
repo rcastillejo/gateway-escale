@@ -3,9 +3,9 @@ package com.sacooliveros.escale.service;
 import com.sacooliveros.escale.bean.Colegio;
 import com.sacooliveros.escale.bean.ColegioDetalle;
 import com.sacooliveros.escale.dao.ColegioDAO;
-import com.sacooliveros.escale.dao.EscaleClientService;
+import com.sacooliveros.escale.client.EscaleClientService;
 import com.sacooliveros.escale.mapper.EscaleMapper;
-import com.sacooliveros.escale.dao.Filter;
+import com.sacooliveros.escale.client.Filter;
 import com.sacooliveros.escale.dao.dto.InstitucionResponse;
 import com.sacooliveros.escale.dao.dto.InstitucionesResponse;
 
