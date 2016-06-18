@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sacooliveros.escale.dao.mybatis.ColegioMyBatisMapper" >
+    
+    <resultMap id="recordResultMap" type="com.sacooliveros.escale.bean.Colegio" >
+        <id column="codmodular" property="codigo" jdbcType="VARCHAR" />
+        <result column="codlocal" property="codigoLocal" jdbcType="VARCHAR" />
+        <result column="nombre" property="nombre" jdbcType="VARCHAR" />
+        <result column="codnivel" property="codigoNivel" jdbcType="VARCHAR" />
+        <result column="gestion" property="gestion" jdbcType="VARCHAR" />
+        <result column="direccion" property="direccion" jdbcType="VARCHAR" />
+        <result column="ubigeo" property="ubigueo" jdbcType="VARCHAR" />
+        <result column="latitud" property="latitud" jdbcType="VARCHAR" />
+        <result column="altitud" property="longitud" jdbcType="VARCHAR" />
+    </resultMap>
+       
+    <select id="get" resultMap="recordResultMap">
+        SELECT
+            codmodular,
+            codlocal,
+            nombre,
+            codnivel,
+            gestion,
+            direccion,
+            ubigeo,
+            latitud,
+            altitud
+        FROM
+            escale_colegios
+        WHERE
+            codmodular = #{codigo}
+    </select>
+
+  
+    <insert id="insert">
+        Insert into escale_colegios
+            (codmodular, codlocal, nombre, codnivel, gestion, direccion, ubigeo, latitud, altitud)
+        values
+            (#{codigo},#{codigoLocal},#{nombre},#{codigoNivel},#{gestion},#{direccion},#{ubigueo},#{latitud},#{longitud})
+    </insert>
+
+    <insert id="insertDetalle">
+        Insert into escale_colegios_detalle
+        (codmodular, codgrado, anio, cantidad)
+        values
+        (#{codigoColegio},#{grado},#{anio},#{cantidad})
+    </insert>
+
+    <update id="update">
+        Update
+            escale_colegios
+        Set
+            codlocal = #{fechaEvaluacion},
+            nombre = #{nombre},
+            codigoNivel = #{codigoNivel},
+            gestion = #{gestion},
+            direccion = #{direccion},
+            ubigueo = #{ubigueo},
+            latitud = #{latitud},
+            longitud = #{longitud}
+        Where
+            codmodular=#{codigo}
+    </update>
+
+    <insert id="updateDetalle">
+        Update
+            escale_colegios_detalle
+        Set
+            cantidad = #{cantidad}
+        Where
+            codmodular = #{codigoColegio}
+        and codgrado = #{grado}
+        and anio = #{anio}
+    </insert>
+
+</mapper>

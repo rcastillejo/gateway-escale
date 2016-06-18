@@ -21,12 +21,12 @@ public class EvaluadorTask implements Runnable {
 
     protected int workerId;
     protected BlockingQueue<Mensaje> colaEvaluacion;
-    //protected Experto service;
+    //protected Experto dao;
 
     public void configure(int workerId, BlockingQueue<Mensaje> colaEvaluacion) {
         this.workerId = workerId;
         this.colaEvaluacion = colaEvaluacion;
-        //this.service = new ExpertoService();
+        //this.dao = new ExpertoService();
     }
 
     @Override
@@ -56,7 +56,7 @@ public class EvaluadorTask implements Runnable {
 
             EvaluacionAcosoEscolar evaluacion = (EvaluacionAcosoEscolar) mensaje.getRequest();
 
-            String msg = service.evaluarRespuestaAcosoEscolar(evaluacion, engine);
+            String msg = dao.evaluarRespuestaAcosoEscolar(evaluacion, engine);
 
             log.info(msg);
         } catch (ExpertoServiceException e) {
@@ -104,7 +104,7 @@ public class EvaluadorTask implements Runnable {
     }
 
     /*public Experto getService() {
-        return service;
+        return dao;
     }*/
 
 }

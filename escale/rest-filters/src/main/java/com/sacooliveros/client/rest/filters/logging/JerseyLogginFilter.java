@@ -24,7 +24,7 @@ public class JerseyLogginFilter extends ClientFilter {
         printRequestBody(reqLog, requestContext);
 
 
-        // Call the next service handler in the filter chain
+        // Call the next dao handler in the filter chain
         ClientResponse responseContext = getNext().handle(requestContext);
 
         // Modify the response

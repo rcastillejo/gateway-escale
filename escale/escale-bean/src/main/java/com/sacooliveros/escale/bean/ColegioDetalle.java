@@ -7,17 +7,22 @@ package com.sacooliveros.escale.bean;
 public class ColegioDetalle {
 
 
-    private String codigoInstitucion;
+    private String codigoColegio;
     private int grado;
     private int anio;
     private int cantidad;
 
-    public String getCodigoInstitucion() {
-        return codigoInstitucion;
+    public ColegioDetalle(int anio, int cantidad) {
+        this.anio = anio;
+        this.cantidad = cantidad;
     }
 
-    public void setCodigoInstitucion(String codigoInstitucion) {
-        this.codigoInstitucion = codigoInstitucion;
+    public String getCodigoColegio() {
+        return codigoColegio;
+    }
+
+    public void setCodigoColegio(String codigoColegio) {
+        this.codigoColegio = codigoColegio;
     }
 
     public int getGrado() {
@@ -47,7 +52,7 @@ public class ColegioDetalle {
     @Override
     public String toString() {
         return "ColegioDetalle{" +
-                "codigoInstitucion='" + codigoInstitucion + '\'' +
+                "codigoColegio='" + codigoColegio + '\'' +
                 ", grado=" + grado +
                 ", anio=" + anio +
                 ", cantidad=" + cantidad +

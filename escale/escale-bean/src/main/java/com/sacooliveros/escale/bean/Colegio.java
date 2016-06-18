@@ -4,6 +4,7 @@ package com.sacooliveros.escale.bean;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import java.util.List;
 
 /**
  * Created by Ricardo on 04/06/2016.
@@ -21,6 +22,15 @@ public class Colegio {
     private String latitud;
     private String longitud;
 
+    private List<ColegioDetalle> detalle;
+
+    public List<ColegioDetalle> getDetalle() {
+        return detalle;
+    }
+
+    public void setDetalle(List<ColegioDetalle> detalle) {
+        this.detalle = detalle;
+    }
 
     public String getCodigo() {
         return codigo;
