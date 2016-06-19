@@ -2,12 +2,14 @@ package com.sacooliveros.escale.service;
 
 import com.sacooliveros.escale.bean.Colegio;
 import com.sacooliveros.escale.bean.ColegioDetalle;
+import com.sacooliveros.escale.client.EscaleClientServiceConfig;
 import com.sacooliveros.escale.dao.ColegioDAO;
 import com.sacooliveros.escale.client.EscaleClientService;
 import com.sacooliveros.escale.mapper.EscaleMapper;
 import com.sacooliveros.escale.client.Filter;
 import com.sacooliveros.escale.client.dto.InstitucionResponse;
 import com.sacooliveros.escale.client.dto.InstitucionesResponse;
+import com.sacooliveros.escale.service.exception.EscaleServiceException;
 import com.sacooliveros.escale.utils.Pagination;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,11 +33,23 @@ public class EscaleService {
         this.pagination = new Pagination(institutesBlock);
     }
 
+
+
     public int calcularTotalColegios(Filter filter) {
         int cantidad = client.getInstitutesCount(filter);
+
+        if(cantidad <= 0){
+            throw new EscaleServiceException("Cantidad de colegios invalida ["+cantidad+"]");
+        }
+
         pagination.setTotalSizeAndCalculate(cantidad);
         LOG.trace("Paginacion calculada [" + pagination + "]");
         return cantidad;
+    }
+
+    public void reiniciarCalculoTotalColegios(){
+        pagination.resetCalculate();
+        LOG.trace("Paginacion reniciada [" + pagination + "]");
     }
 
     public boolean existeColegiosPorConsultar(){
@@ -51,6 +65,12 @@ public class EscaleService {
         filter.setStart(pagination.getCurrentBlockSize());
 
         response = client.getInstitutes(filter);
+
+
+        if(response == null || response.getItems() == null || response.getItems().isEmpty()){
+            throw new EscaleServiceException("No encontraron colegios ["+response+"]");
+        }
+
         pagination.nextBlock();
 
         LOG.trace("Paginacion de instituciones recalculada [" + pagination + "]");
@@ -61,19 +81,21 @@ public class EscaleService {
 
     public List<Colegio> consultarDetalleColegios(List<Colegio> colegios, Filter filter) {
         for (Colegio colegio : colegios) {
-            colegio.setDetalle(consultarDetalleColegio(colegio, filter.clone()));
+            colegio.setDetalle(consultarDetalleColegio(colegio, filter));
         }
         return colegios;
     }
 
-    private List<ColegioDetalle> consultarDetalleColegio(Colegio colegio, Filter filter) {
+    public List<ColegioDetalle> consultarDetalleColegio(Colegio colegio, Filter filter) {
         List<ColegioDetalle> colegioDetalle;
         InstitucionResponse response;
+        Filter colegioFilter;
 
-        filter.setPrefixLevel(colegio.getCodigoNivel());
+        colegioFilter = filter.clone();
+        colegioFilter.setPrefixLevel(colegio.getCodigoNivel());
 
-        response = client.getInstituteDetails(colegio.getCodigo(), filter);
-        colegioDetalle = escaleMapper.mapFrom(response, filter.getYear());
+        response = client.getInstituteDetails(colegio.getCodigo(), colegioFilter);
+        colegioDetalle = escaleMapper.mapFrom(response, colegioFilter.getYear());
         return colegioDetalle;
     }
 
@@ -83,7 +105,7 @@ public class EscaleService {
         }
     }
 
-    private void guardarColegio(Colegio colegio) {
+    public void guardarColegio(Colegio colegio) {
         Colegio colegioEncontrado = colegiodao.get(colegio.getCodigo());
 
         LOG.debug("colegio encontrado:"+colegioEncontrado);

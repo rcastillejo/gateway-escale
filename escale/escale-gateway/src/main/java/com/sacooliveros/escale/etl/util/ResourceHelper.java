@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.sacooliveros.gepsac.evaluador.util;
+package com.sacooliveros.escale.etl.util;
 
-import com.sacooliveros.gepsac.evaluador.Server;
+import com.sacooliveros.escale.etl.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

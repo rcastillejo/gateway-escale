@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.sacooliveros.gepsac.evaluador.thread;
+package com.sacooliveros.escale.etl.thread;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -11,19 +11,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * @author Ricardo
  */
-public class BaseThreadFactory implements ThreadFactory {
+public class WorkerThreadFactory implements ThreadFactory {
 
     private final ThreadGroup group;
     private final AtomicInteger threadTrace;
     private final StringBuilder prefix;
 
-    public BaseThreadFactory(String poolName, int poolTrace) {
+    public WorkerThreadFactory(String poolName) {
         threadTrace = new AtomicInteger(1);
         group = new ThreadGroup(poolName);
         prefix = new StringBuilder(poolName);
-        prefix.append("-")
-                .append(poolTrace)
-                .append("-th-");
+        prefix.append("-");
     }
 
     public String getName(int trace) {

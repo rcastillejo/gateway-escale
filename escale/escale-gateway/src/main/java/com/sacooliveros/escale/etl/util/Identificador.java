@@ -4,7 +4,7 @@
  * All rights reserved.
  * Creado el 04 de Enero 2006
  */
-package com.sacooliveros.gepsac.evaluador.util;
+package com.sacooliveros.escale.etl.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
