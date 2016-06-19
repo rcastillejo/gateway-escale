@@ -17,7 +17,7 @@
     </appender>
     
     <appender name="TRAZADO" class="org.apache.log4j.DailyRollingFileAppender">       
-        <param name="File" value="trazado.log" />
+        <param name="File" value="log/trazado.log" />
         <param name="DatePattern" value="'.'yyyyMMdd" />
         <param name="Append" value="true" />
         <layout class="org.apache.log4j.PatternLayout">
@@ -26,7 +26,7 @@
     </appender>
 
     <appender name="PERFORMANCE" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="performance.log" />
+        <param name="File" value="log/performance.log" />
         <param name="DatePattern" value="'.'yyyyMMdd" />
         <param name="Append" value="true" />
         <layout class="org.apache.log4j.PatternLayout">
@@ -35,7 +35,7 @@
     </appender>
 
     <appender name="TRANSACTION" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="transaction.log" />
+        <param name="File" value="log/transaction.log" />
         <param name="DatePattern" value="'.'yyyyMMdd" />
         <param name="Append" value="true" />
         <layout class="org.apache.log4j.PatternLayout">
@@ -44,7 +44,7 @@
     </appender>
 
     <appender name="ERROR" class="org.apache.log4j.DailyRollingFileAppender">       
-        <param name="File" value="error.log" />
+        <param name="File" value="log/error.log" />
         <param name="DatePattern" value="'.'yyyyMMdd" />
         <param name="Append" value="true" />
         <layout class="org.apache.log4j.PatternLayout">

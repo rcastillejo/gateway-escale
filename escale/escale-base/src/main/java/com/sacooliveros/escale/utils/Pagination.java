@@ -1,9 +1,9 @@
-package com.sacooliveros.escale.client;
+package com.sacooliveros.escale.utils;
 
 /**
  * Created by rcastillejo on 02/06/2016.
  */
-public final class Concatenation {
+public final class Pagination {
     private int totalSize;
     private int blockSize;
     private int blockCount;
@@ -11,11 +11,11 @@ public final class Concatenation {
     private int currentBlockCount;
 
 
-    public Concatenation(int blockSize) {
+    public Pagination(int blockSize) {
         this.blockSize = blockSize;
     }
 
-    public Concatenation(int totalSize, int blockSize) {
+    public Pagination(int totalSize, int blockSize) {
         this.totalSize = totalSize;
         this.blockSize = blockSize;
         calcutate();
@@ -71,7 +71,7 @@ public final class Concatenation {
 
     @Override
     public String toString() {
-        return "Concatenation{" +
+        return "Pagination{" +
                 "totalSize=" + totalSize +
                 ", blockSize=" + blockSize +
                 ", blockCount=" + blockCount +

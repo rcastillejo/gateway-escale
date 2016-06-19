@@ -41,8 +41,9 @@ public class Filter implements Cloneable{
     }
 
 
-    public void addPrefixLevel(String level) {
+    public void setPrefixLevel(String level) {
         if(level != null && !level.isEmpty()){
+            this.levels.clear();
             this.levels.add(level.substring(0,1));
         }
     }
@@ -75,8 +76,12 @@ public class Filter implements Cloneable{
     }
 
     @Override
-    public Filter clone() throws CloneNotSupportedException {
-        return (Filter) super.clone();
+    public Filter clone() {
+        try {
+            return (Filter) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return this;
+        }
     }
 
     @Override

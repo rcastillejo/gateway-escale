@@ -9,20 +9,20 @@ import com.sacooliveros.escale.bean.Colegio;
 import com.sacooliveros.escale.bean.ColegioDetalle;
 import com.sacooliveros.escale.client.EscaleClientServiceConfig;
 import com.sacooliveros.escale.client.Filter;
+import com.sacooliveros.escale.client.dto.InstitucionesResponse;
 import com.sacooliveros.escale.client.rest.RestEscaleClientService;
 import com.sacooliveros.escale.dao.mybatis.MyBatisDAOFactory;
 import com.sacooliveros.escale.mapper.EscaleMapper;
+import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -51,7 +51,8 @@ public class EscaleServiceTest {
         escaleService = new EscaleService(
                 RestEscaleClientService.newInstance(config),
                 EscaleMapper.newInstace(),
-                MyBatisDAOFactory.getColegioDAO());
+                MyBatisDAOFactory.getColegioDAO(),
+                50);
 
     }
 
@@ -69,18 +70,15 @@ public class EscaleServiceTest {
         filter.addStates("1");
         filter.setStart(0);
 
-        List<Colegio> colegios = escaleService.obtenerColegios(filter);
+        List<Colegio> colegios = escaleService.consultarColegios(filter);
         log.debug("Colegios Obtenidos:" + colegios);
 
-        for (Colegio colegio : colegios) {
-            Filter filterDetalle = new Filter();
-            filterDetalle.setExpandLevel("5");
-            filterDetalle.setYear("2014");
-            log.debug("Buscando detalle del colegio ["+filterDetalle+"] colegio[" + colegio + "]");
-            List<ColegioDetalle> detalle = escaleService.obtenerDetalle(colegio, filterDetalle);
-            log.debug("Detalle encontrado:" + detalle);
-            colegio.setDetalle(detalle);
-        }
+
+        Filter filterDetalle = new Filter();
+        filterDetalle.setExpandLevel("5");
+        filterDetalle.setYear("2014");
+        log.debug("Buscando detalle del colegio ["+filterDetalle+"]");
+        escaleService.consultarDetalleColegios(colegios, filterDetalle);
 
 
         assertNotNull(colegios);
@@ -95,29 +93,56 @@ public class EscaleServiceTest {
         filter.addStates("1");
         filter.setStart(0);
 
-        List<Colegio> colegios = escaleService.obtenerColegios(filter);
+        List<Colegio> colegios = escaleService.consultarColegios(filter);
         log.debug("Colegios Obtenidos:" + colegios);
 
 
-        for (Colegio colegio : colegios) {
-            Filter filterDetalle = new Filter();
-            filterDetalle.setExpandLevel("5");
-            filterDetalle.setYear("2015");
-            log.debug("Buscando detalle del colegio ["+filterDetalle+"] colegio[" + colegio + "]");
-            List<ColegioDetalle> detalle = escaleService.obtenerDetalle(colegio, filterDetalle);
-            log.debug("Detalle encontrado:" + detalle);
-            colegio.setDetalle(detalle);
+        Filter filterDetalle = new Filter();
+        filterDetalle.setExpandLevel("5");
+        filterDetalle.setYear("2015");
 
-
-        }
+        log.debug("Buscando detalle del colegio ["+filterDetalle+"]");
+        escaleService.consultarDetalleColegios(colegios, filterDetalle);
 
         log.debug("Colegios a guardar:" + colegios);
-        for (Colegio colegio : colegios) {
-            log.debug("Guardando colegio:" + colegio);
-            escaleService.guardarColegio(colegio);
-        }
+        escaleService.guardarColegios(colegios);
 
         assertNotNull(colegios);
+    }
+
+
+    @Ignore
+    @Test
+    public void testInstitutesPagintationRetrieveSuccess() {
+
+        Filter readerFilter;
+        Filter workerFilter;
+
+
+        readerFilter = new Filter();
+        readerFilter.addLevels("A1", "A2", "A3", "A5", "B0", "F0");
+        readerFilter.addStates("1");
+
+        int count = escaleService.calcularTotalColegios(readerFilter);
+
+        int c = 0;
+
+        while(escaleService.existeColegiosPorConsultar() && c < 200){
+            //Hilo de lectura
+            List<Colegio> colegios = escaleService.consultarColegios(readerFilter);
+
+            //Worker
+            workerFilter = new Filter();
+            workerFilter.setExpandLevel("5");
+            workerFilter.setYear("2014");
+            colegios = escaleService.consultarDetalleColegios(colegios, workerFilter);
+            escaleService.guardarColegios(colegios);
+
+            c += colegios.size();
+        }
+
+        System.out.println("count:" + count + " vs c:" + c);
+        assertEquals(200, c);
     }
 
 }

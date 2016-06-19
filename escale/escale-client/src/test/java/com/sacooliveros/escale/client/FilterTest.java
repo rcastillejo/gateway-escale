@@ -50,7 +50,7 @@ public class FilterTest {
     public void testSetPrefixLevelsRetrieve(){
         Filter filter = new Filter();
 
-        filter.addPrefixLevel("B1");
+        filter.setPrefixLevel("B1");
         assertEquals("B", filter.getLevels().get(0));
 
 

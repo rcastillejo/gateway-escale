@@ -34,8 +34,6 @@ public class RestEscaleClientServiceTest {
     @Before
     public void setUp() {
         EscaleClientServiceConfig config = new EscaleClientServiceConfig();
-        config.setInstitutesBlock(50);
-
         clientService = RestEscaleClientService.newInstance(config);
 
     }
@@ -62,7 +60,6 @@ public class RestEscaleClientServiceTest {
 
         System.out.println("cantidad:" + count);
         assertTrue(count > 0);
-        assertTrue(clientService.hasInstitutes());
     }
 
 
@@ -241,36 +238,4 @@ public class RestEscaleClientServiceTest {
         assertNotNull(response.getSecundaria());
     }
 
-    @Ignore
-    @Test
-    public void testInstitutesPagintationRetrieveSuccess() {
-
-        Filter filter = new Filter();
-        ClientConfig clientConfig = new DefaultClientConfig();
-        EscaleClientServiceConfig config = new EscaleClientServiceConfig();
-
-        clientConfig.getProperties().put(ClientConfig.PROPERTY_READ_TIMEOUT, 10);
-        clientConfig.getProperties().put(ClientConfig.PROPERTY_CONNECT_TIMEOUT, 10);
-
-        config.setUrl("http://escale.minedu.gob.pe/padron/rest/instituciones");
-        config.setPathCount("cuenta");
-        config.setPathInstitutes("");
-        clientService.setConfig(config);
-
-        filter.addLevels("A1", "A2", "A3", "A5", "B0", "F0");
-        filter.addStates("1");
-
-
-        int count = clientService.getInstitutesCount(filter);
-
-        int c = 0;
-
-        while(clientService.hasInstitutes()){
-            InstitucionesResponse response = clientService.getInstitutes(filter);
-            c += response.getItems().size();
-        }
-
-        System.out.println("count:" + count + " vs c:" + c);
-        assertEquals(c, count);
-    }
 }
