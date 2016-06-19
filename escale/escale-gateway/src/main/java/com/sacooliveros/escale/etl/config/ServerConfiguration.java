@@ -6,11 +6,8 @@
 package com.sacooliveros.escale.etl.config;
 
 import com.sacooliveros.escale.client.EscaleClientServiceConfig;
-import com.sacooliveros.escale.client.rest.RestEscaleClientService;
-import com.sacooliveros.escale.etl.task.Type;
 import com.sacooliveros.escale.etl.util.ResourceHelper;
 
-import java.util.List;
 import java.util.Properties;
 
 /**
@@ -18,15 +15,13 @@ import java.util.Properties;
  */
 public class ServerConfiguration {
     public static final String SEPARATOR = ",";
-    private Properties config;
     protected final String brokerName;
     protected final int timeForThreads;
     protected final int brokerInterval;
-
     protected final int numThreads;
     protected final String serverName;
     protected final long timeout;
-
+    private Properties config;
     private EscaleClientServiceConfig clientConfig;
     private String[] levels;
     private String[] states;
@@ -53,10 +48,10 @@ public class ServerConfiguration {
         this.configClientService();
         this.configClientFilter();
         this.myBatisResource = config.getProperty("escale.persistence", "mybatis-config.xml");
-        this.instituteBlock =Integer.parseInt(config.getProperty("escale.rest.institutesBlock", "50"));
+        this.instituteBlock = Integer.parseInt(config.getProperty("escale.rest.institutesBlock", "50"));
     }
 
-    private void configClientService(){
+    private void configClientService() {
         this.clientConfig = new EscaleClientServiceConfig();
         this.clientConfig.setUrl(config.getProperty("escale.rest.url", "http://escale.minedu.gob.pe/padron/rest/instituciones"));
         this.clientConfig.setPathCount(config.getProperty("escale.rest.pathCount", "cuenta"));
@@ -65,7 +60,7 @@ public class ServerConfiguration {
 
     }
 
-    private void configClientFilter(){
+    private void configClientFilter() {
         this.levels = readAndSplit("escale.levels");
         this.states = readAndSplit("escale.states");
         this.years = readAndSplit("escale.years");
