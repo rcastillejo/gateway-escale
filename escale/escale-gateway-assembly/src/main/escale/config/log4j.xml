@@ -70,7 +70,7 @@
     </logger>-->
      
     
-    <logger name="com.sacooliveros.gepsac" additivity="false">
+    <logger name="com.sacooliveros.escale" additivity="false">
         <level value="INFO" />
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="TRAZADO"/>

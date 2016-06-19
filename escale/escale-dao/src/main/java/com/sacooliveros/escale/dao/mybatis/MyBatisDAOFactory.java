@@ -17,34 +17,38 @@ import java.util.Collection;
  */
 public class MyBatisDAOFactory {
     private static final Logger log = LoggerFactory.getLogger(MyBatisDAOFactory.class);
-    private static SqlSessionFactory sessionFactory;
+    private SqlSessionFactory sessionFactory;
 
-    public static void init(String resource) {
+    public MyBatisDAOFactory(String resource) {
+        init(resource);
+        printConfiguration();
+    }
 
+    private void init(String resource) {
         try {
-            Reader reader = Resources.getResourceAsReader(
-                    resource);
+            Reader reader = Resources.getResourceAsReader(resource);
 
             sessionFactory = new SqlSessionFactoryBuilder().build(reader);
 
             log.debug("Fabrica de sesiones MyBatis creado.");
-
-            Configuration config = sessionFactory.getConfiguration();
-            log.trace("Configuracion mybatis [{}]", config);
-            if (config != null) {
-                Collection<String> parameterNames = config.getParameterMapNames();
-                log.trace("Configuracion mybatis parameterNames [{}]", parameterNames);
-                for (String name : parameterNames) {
-                    log.trace("Parametros [{}={}]", new Object[]{name, sessionFactory.getConfiguration().getParameterMap(name)});
-                }
-            }
-
         } catch (Exception e) {
             throw new DAOException("Error al crear la fabrica de sesiones", e);
         }
     }
 
-    public static ColegioDAO getColegioDAO() {
+    private void printConfiguration() {
+        Configuration config = sessionFactory.getConfiguration();
+        log.trace("Configuracion mybatis [{}]", config);
+        if (config != null) {
+            Collection<String> parameterNames = config.getParameterMapNames();
+            log.trace("Configuracion mybatis parameterNames [{}]", parameterNames);
+            for (String name : parameterNames) {
+                log.trace("Parametros [{}={}]", new Object[]{name, sessionFactory.getConfiguration().getParameterMap(name)});
+            }
+        }
+    }
+
+    public ColegioDAO getColegioDAO() {
         return new ColegioMyBatisDAO(sessionFactory);
     }
 }

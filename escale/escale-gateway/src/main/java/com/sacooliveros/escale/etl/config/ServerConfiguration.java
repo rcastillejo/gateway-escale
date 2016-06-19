@@ -8,6 +8,7 @@ package com.sacooliveros.escale.etl.config;
 import com.sacooliveros.escale.client.EscaleClientServiceConfig;
 import com.sacooliveros.escale.etl.util.ResourceHelper;
 
+import java.util.Calendar;
 import java.util.Properties;
 
 /**
@@ -53,22 +54,26 @@ public class ServerConfiguration {
 
     private void configClientService() {
         this.clientConfig = new EscaleClientServiceConfig();
-        this.clientConfig.setUrl(config.getProperty("escale.rest.url", "http://escale.minedu.gob.pe/padron/rest/instituciones"));
-        this.clientConfig.setPathCount(config.getProperty("escale.rest.pathCount", "cuenta"));
-        this.clientConfig.setPathInstitutes(config.getProperty("escale.rest.pathInstitutes", ""));
-        this.clientConfig.setPathInstituteDetail(config.getProperty("escale.rest.pathInstituteDetail", "{0}/0/"));
-
+        this.clientConfig.setUrl(config.getProperty("escale.rest.url"));
+        this.clientConfig.setPathCount(config.getProperty("escale.rest.pathCount"));
+        this.clientConfig.setPathInstitutes(config.getProperty("escale.rest.pathInstitutes"));
+        this.clientConfig.setPathInstituteDetail(config.getProperty("escale.rest.pathInstituteDetail"));
     }
 
     private void configClientFilter() {
-        this.levels = readAndSplit("escale.levels");
-        this.states = readAndSplit("escale.states");
-        this.years = readAndSplit("escale.years");
-        this.expandLevel = config.getProperty("escale.expandLevel", "");
+        this.levels = readAndSplit("escale.filter.levels");
+        this.states = readAndSplit("escale.filter.states");
+        this.years = readAndSplit("escale.filter.years", String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+        this.expandLevel = config.getProperty("escale.filter.expandLevel");
+    }
+
+    private String[] readAndSplit(String param, String defaultValue) {
+        String readConfig = config.getProperty(param, defaultValue);
+        return readConfig.split(SEPARATOR);
     }
 
     private String[] readAndSplit(String param) {
-        String readConfig = config.getProperty(param, "");
+        String readConfig = config.getProperty(param);
         return readConfig.split(SEPARATOR);
     }
 

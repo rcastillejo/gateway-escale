@@ -33,6 +33,12 @@ public class EscaleService {
         this.pagination = new Pagination(institutesBlock);
     }
 
+    public EscaleService(EscaleClientService client, EscaleMapper escaleMapper, ColegioDAO colegiodao) {
+        this.client = client;
+        this.escaleMapper = escaleMapper;
+        this.colegiodao = colegiodao;
+    }
+
 
 
     public int calcularTotalColegios(Filter filter) {

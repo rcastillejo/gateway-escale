@@ -9,48 +9,40 @@
     
     <dependencySets>
         <dependencySet>
-            <outputDirectory>/gepsac/libs/evaluador</outputDirectory>
+            <outputDirectory>/escale/libs</outputDirectory>
         </dependencySet>
     </dependencySets>
     
     <fileSets>
         <fileSet>
-            <directory>src/main/gepsac/clips</directory>
-            <outputDirectory>/gepsac</outputDirectory>
+            <directory>src/main/escale/libs</directory>
+            <outputDirectory>/escale/libs</outputDirectory>
             <includes>
                 <include>**/*</include>
             </includes>
         </fileSet>
         
         <fileSet>
-            <directory>src/main/gepsac/libs/evaluador</directory>
-            <outputDirectory>/gepsac/libs/evaluador</outputDirectory>
+            <directory>src/main/escale/config</directory>
+            <outputDirectory>/escale/config</outputDirectory>
             <includes>
                 <include>**/*</include>
             </includes>
         </fileSet>
         
         <fileSet>
-            <directory>src/main/gepsac/config/evaluador</directory>
-            <outputDirectory>/gepsac/config/evaluador</outputDirectory>
-            <includes>
-                <include>**/*</include>
-            </includes>
+            <directory>src/main/escale/log</directory>
+            <outputDirectory>/escale/log</outputDirectory>
         </fileSet>
         
         <fileSet>
-            <directory>src/main/gepsac/log/evaluador</directory>
-            <outputDirectory>/gepsac/log/evaluador</outputDirectory>
-        </fileSet>
-        
-        <fileSet>
-            <directory>src/main/gepsac/bin</directory>
-            <outputDirectory>/gepsac</outputDirectory>
+            <directory>src/main/escale/binappl</directory>
+            <outputDirectory>/escale</outputDirectory>
             <lineEnding>keep</lineEnding>
             <fileMode>0755</fileMode>
             <includes>
                 <!--<include>**/*.sh</include>-->
-                <include>**/*.cmd</include>
+                <include>**/*.bat</include>
             </includes>
         </fileSet>        
     </fileSets>

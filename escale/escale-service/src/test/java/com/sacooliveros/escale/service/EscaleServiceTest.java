@@ -6,14 +6,11 @@
 package com.sacooliveros.escale.service;
 
 import com.sacooliveros.escale.bean.Colegio;
-import com.sacooliveros.escale.bean.ColegioDetalle;
 import com.sacooliveros.escale.client.EscaleClientServiceConfig;
 import com.sacooliveros.escale.client.Filter;
-import com.sacooliveros.escale.client.dto.InstitucionesResponse;
 import com.sacooliveros.escale.client.rest.RestEscaleClientService;
 import com.sacooliveros.escale.dao.mybatis.MyBatisDAOFactory;
 import com.sacooliveros.escale.mapper.EscaleMapper;
-import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
@@ -39,7 +36,7 @@ public class EscaleServiceTest {
     @Before
     public void setUp() {
 
-        MyBatisDAOFactory.init("mybatis-config.xml");
+        MyBatisDAOFactory daoFactory = new MyBatisDAOFactory("mybatis-config.xml");
 
         EscaleClientServiceConfig config = new EscaleClientServiceConfig();
         config.setRestConfig(new DefaultClientConfig());
@@ -51,7 +48,7 @@ public class EscaleServiceTest {
         escaleService = new EscaleService(
                 RestEscaleClientService.newInstance(config),
                 EscaleMapper.newInstace(),
-                MyBatisDAOFactory.getColegioDAO(),
+                daoFactory.getColegioDAO(),
                 50);
 
     }
@@ -77,7 +74,7 @@ public class EscaleServiceTest {
         Filter filterDetalle = new Filter();
         filterDetalle.setExpandLevel("5");
         filterDetalle.setYear("2014");
-        log.debug("Buscando detalle del colegio ["+filterDetalle+"]");
+        log.debug("Buscando detalle del colegio [" + filterDetalle + "]");
         escaleService.consultarDetalleColegios(colegios, filterDetalle);
 
 
@@ -101,7 +98,7 @@ public class EscaleServiceTest {
         filterDetalle.setExpandLevel("5");
         filterDetalle.setYear("2015");
 
-        log.debug("Buscando detalle del colegio ["+filterDetalle+"]");
+        log.debug("Buscando detalle del colegio [" + filterDetalle + "]");
         escaleService.consultarDetalleColegios(colegios, filterDetalle);
 
         log.debug("Colegios a guardar:" + colegios);
@@ -127,7 +124,7 @@ public class EscaleServiceTest {
 
         int c = 0;
 
-        while(escaleService.existeColegiosPorConsultar() && c < 200){
+        while (escaleService.existeColegiosPorConsultar() && c < 200) {
             //Hilo de lectura
             List<Colegio> colegios = escaleService.consultarColegios(readerFilter);
 
