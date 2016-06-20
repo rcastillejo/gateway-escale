@@ -6,19 +6,19 @@ set JAVA_BIN=%JAVA_HOME%\bin
 
 
 REM Aplicacion
-set APP_NAME=evaluador
+set APP_NAME=escale
 
 REM Indicamos el nombre del main-class
 set MAIN-CLASS=com.sacooliveros.escale.etl.Server
 
 REM Carpeta de configuracion
-set DIR_CONFIG=config\%APP_NAME%
+set DIR_CONFIG=config
 
 REM Directorios que contiene el Classpath
-set DIRS_JARS=libs\%APP_NAME%
+set DIRS_JARS=libs
 
 REM Directorio que contiene log
-set LOG=log\%APP_NAME%
+set LOG=log
 
 REM Iniciamos las variables para concatenar el Classpath
 set CLSPATH=
@@ -31,8 +31,8 @@ FOR %%D IN (%DIRS_JARS%) DO (
                               SET CLSPATH=!CLSPATH!;%%F
                 )
 )
-set JAVA_OPTS=-Ds2j.id=1 -Ds2j.home=%DIR_CONFIG%  -DLOGAPP=%LOG%
-set JVM_ARGS=-Xms128m -Xmx128m
+set JAVA_OPTS=-DLOGAPP=%LOG%
+set JVM_ARGS=-Xms16m -Xmx16m
 
 REM echo %CLSPATH%
 

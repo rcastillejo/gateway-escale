@@ -15,8 +15,6 @@
                 <artifactId>maven-scm-plugin</artifactId>
                 <version>1.2</version>
                 <configuration>
-                    <username></username>
-                    <password></password>
                     <connectionType>developerConnection</connectionType>
                     <tag>${project.artifactId}-${project.version}</tag>
                     <branch>${project.artifactId}-${project.version}</branch>

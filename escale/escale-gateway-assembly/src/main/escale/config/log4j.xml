@@ -72,7 +72,6 @@
     
     <logger name="com.sacooliveros.escale" additivity="false">
         <level value="INFO" />
-        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="TRAZADO"/>
     </logger>
     
@@ -82,8 +81,7 @@
     </logger>-->
 
     <root>
-        <level value="ERROR" />        
-        <appender-ref ref="CONSOLE"/>
+        <level value="ERROR" />
         <appender-ref ref="ERROR" />
     </root>
 </log4j:configuration>

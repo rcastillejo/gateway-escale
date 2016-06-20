@@ -13,7 +13,7 @@
         <module>escale-parent</module>
         <module>escale-base</module>
         <module>escale-bean</module>
-        <module>escale-dto</module>
+        <!--<module>escale-dto</module>-->
 		<!--Extract (Servicios) -->
         <module>escale-client</module>
 		<!--Transform (Servicios)-->

@@ -53,11 +53,6 @@ public class EscaleService {
         return cantidad;
     }
 
-    public void reiniciarCalculoTotalColegios(){
-        pagination.resetCalculate();
-        LOG.trace("Paginacion reniciada [" + pagination + "]");
-    }
-
     public boolean existeColegiosPorConsultar(){
         return pagination.hasMore();
     }

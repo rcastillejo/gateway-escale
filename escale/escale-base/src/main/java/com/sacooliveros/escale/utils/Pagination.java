@@ -21,12 +21,6 @@ public final class Pagination {
         calcutate();
     }
 
-    public void resetCalculate(){
-        currentBlockSize = 0;
-        currentBlockCount = 0;
-        calcutate();
-    }
-
     private void validate() {
         if (totalSize <= 0) {
             throw new RuntimeException("Total Size [" + totalSize + "] should be greater than zero");
