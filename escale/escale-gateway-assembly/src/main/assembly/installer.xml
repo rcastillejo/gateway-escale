@@ -44,6 +44,17 @@
                 <!--<include>**/*.sh</include>-->
                 <include>**/*.bat</include>
             </includes>
-        </fileSet>        
+        </fileSet>
+
+        <!-- Instalador del Servicio Windows -->
+        <fileSet>
+            <directory>src/main/escale/executable</directory>
+            <outputDirectory>/escale</outputDirectory>
+            <lineEnding>keep</lineEnding>
+            <fileMode>0755</fileMode>
+            <includes>
+                <include>**/*.exe</include>
+            </includes>
+        </fileSet>
     </fileSets>
 </assembly>

@@ -1,8 +1,8 @@
 setLocal EnableDelayedExpansion
 
 REM autor: rcastillejo
-set JAVA_HOME="C:\Program Files\Java\jdk1.7.0_45"
-set JAVA_BIN=%JAVA_HOME%\bin
+REM set JAVA_HOME="C:\Program Files\Java\jdk1.7.0_45"
+set JAVA_BIN="%JAVA_HOME%"\bin
 
 
 REM Aplicacion
@@ -11,14 +11,16 @@ set APP_NAME=escale
 REM Indicamos el nombre del main-class
 set MAIN-CLASS=com.sacooliveros.escale.etl.Server
 
+set DIR="%cd%"
+
 REM Carpeta de configuracion
-set DIR_CONFIG=config
+set DIR_CONFIG=%DIR%\config
 
 REM Directorios que contiene el Classpath
-set DIRS_JARS=libs
+set DIRS_JARS=%DIR%\libs
 
 REM Directorio que contiene log
-set LOG=log
+set LOG=%DIR%\log
 
 REM Iniciamos las variables para concatenar el Classpath
 set CLSPATH=

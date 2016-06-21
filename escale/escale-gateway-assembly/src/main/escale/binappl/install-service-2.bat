@@ -1,15 +1,15 @@
 set SERVICE_NAME=ESCALEService
-set PR_INSTALL=D:\rcastillejo\Documentos\Tesis-Eduardo\fuentes\gateway-escale\escale\escale-gateway-assembly\target\escale\prunsrv.exe
+set DIR="D:\UPC\Eduardo\fuentes\gateway-escale\escale\escale-gateway-assembly\target\escale"
+set PR_INSTALL=%DIR%\prunsrv.exe
  
 REM Service log configuration
 set PR_LOGPREFIX=%SERVICE_NAME%
-set PR_LOGPATH=D:\rcastillejo\Documentos\Tesis-Eduardo\fuentes\gateway-escale\escale\escale-gateway-assembly\target\escale\logs
-set PR_STDOUTPUT=D:\rcastillejo\Documentos\Tesis-Eduardo\fuentes\gateway-escale\escale\escale-gateway-assembly\target\escale\logs\stdout.txt
-set PR_STDERROR=D:\rcastillejo\Documentos\Tesis-Eduardo\fuentes\gateway-escale\escale\escale-gateway-assembly\target\escale\logs\stderr.txt
+set PR_LOGPATH=%DIR%\logs
+set PR_STDOUTPUT=%DIR%\logs\stdout.txt
+set PR_STDERROR=%DIR%\logs\stderr.txt
 set PR_LOGLEVEL=Debug
  
  
-set DIR=D:\rcastillejo\Documentos\Tesis-Eduardo\fuentes\gateway-escale\escale\escale-gateway-assembly\target\escale
 set DIR_CONFIG=%DIR%\config
 set DIRS_JARS=%DIR%\libs
 set CLSPATH=
@@ -25,9 +25,9 @@ REM claspath %CLSPATH%
 
 REM Path to java installation
 REM set PR_JVM=C:\Program Files\Java\jre7\bin\server\jvm.dll
-set JAVA_HOME="C:\Program Files\Java\jdk1.7.0_45"
-set PR_CLASSPATH=D:\rcastillejo\Documentos\Tesis-Eduardo\fuentes\gateway-escale\escale\escale-gateway-assembly\target\escale\libs\.;D:\rcastillejo\Documentos\Tesis-Eduardo\fuentes\gateway-escale\escale\escale-gateway-assembly\target\escale\config\.
- 
+set JAVA_HOME="C:\Program Files\Java\jdk1.7.0_79"
+set PR_CLASSPATH=%CLSPATH%;%DIR_CONFIG%
+
 REM Startup configuration
 set PR_STARTUP=auto
 set PR_STARTMODE=Java
