@@ -13,7 +13,7 @@
         <module>escale-parent</module>
         <module>escale-base</module>
         <module>escale-bean</module>
-        <!--<module>escale-dto</module>-->
+        <module>escale-dto</module>
 		<!--Extract (Servicios) -->
         <module>escale-client</module>
 		<!--Transform (Servicios)-->
@@ -23,7 +23,7 @@
 		<!--Service (Logica Negocio)-->
 		<module>escale-service</module>
 		<!--Servicio Windows (Vista)-->
-		<module>escale-gateway</module>		
+		<module>escale-gateway</module>
 		<!--Empaquetado Servicio Windows-->
         <module>escale-gateway-assembly</module>        
     </modules>

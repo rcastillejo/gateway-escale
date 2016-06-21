@@ -25,6 +25,15 @@
         </layout>
     </appender>
 
+    <appender name="TRAZADO_HTTP" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="log/trazado_http.log" />
+        <param name="DatePattern" value="'.'yyyyMMdd" />
+        <param name="Append" value="true" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%-10t] (%c{2}) %m - [linea:%L]%n" />
+        </layout>
+    </appender>
+
     <appender name="PERFORMANCE" class="org.apache.log4j.DailyRollingFileAppender">
         <param name="File" value="log/performance.log" />
         <param name="DatePattern" value="'.'yyyyMMdd" />
@@ -77,6 +86,7 @@
 
     <logger name="com.sacooliveros.client.rest.filters" additivity="false">
         <level value="TRACE" />
+        <appender-ref ref="TRAZADO_HTTP" />
     </logger>
 
     <root>

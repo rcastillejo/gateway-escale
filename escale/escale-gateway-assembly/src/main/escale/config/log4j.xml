@@ -42,43 +42,11 @@
             <param name="LevelMax" value="FATAL"/>
         </filter>-->
     </appender>    
-    
-    <!--
-    <appender name="EMAIL"  class="org.apache.log4j.net.SMTPAppender">
-        <param name="BufferSize" value="512" />
-        <param name="SMTPHost" value="localhost" />
-        <param name="SMTPPort" value="465" />
-        <param name="SMTPProtocol" value="smtps" />
-        <param name="SMTPUsername" value="gepsac.email@sacooliveros.edu.pe" />
-        <param name="SMTPPassword" value="gepsac" />
-        <param name="SMTPDebug" value="true" />
-        <param name="From" value="gepsac.email@sacooliveros.edu.pe" />
-        <param name="To" value="ricardo.castillejo@gmail.com" />
-        <param name="Subject" value="[SMTPAppender] Application message" />
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern"
-                   value="[%d{ISO8601}]%n%n%-5p%n%n%c%n%n%m%n%n" />
-        </layout>
-        <filter class="org.apache.log4j.varia.LevelRangeFilter">
-            <param name="LevelMin" value="ERROR"/>
-            <param name="LevelMax" value="FATAL"/>
-        </filter>
-    </appender>
-    <logger name="SmtpAppenderLogger" additivity="false">
-        <level value="INFO"/>	
-        <appender-ref ref="EMAIL"/>
-    </logger>-->
-     
-    
+
     <logger name="com.sacooliveros.escale" additivity="false">
         <level value="INFO" />
         <appender-ref ref="TRAZADO"/>
     </logger>
-    
-    <!--<logger name="com.sacooliveros.gepsac.dao.myibatis" additivity="false">
-        <level value="ERROR" />
-        <appender-ref ref="ERROR"/>
-    </logger>-->
 
     <root>
         <level value="ERROR" />

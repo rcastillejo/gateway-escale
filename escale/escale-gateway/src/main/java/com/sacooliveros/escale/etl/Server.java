@@ -4,9 +4,8 @@ package com.sacooliveros.escale.etl;
 import com.sacooliveros.escale.etl.message.Mensaje;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.misc.Signal;
-import sun.misc.SignalHandler;
 
+import java.util.Arrays;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Server {
@@ -22,32 +21,32 @@ public class Server {
      *
      * @param args Array con los parametros de entrada
      */
-    public static void main(String[] args) throws Exception {
-        localServer = new LocalServer("broker.properties", new LinkedBlockingQueue<Mensaje>());
-
-        LOG.info("Iniciando server");
-        localServer.start();
+    public static void main(String[] args) {
+        start(args);
     }
 
+    public static void start(String[] args) {
+        System.out.println("Iniciando ["+ Arrays.toString(args) +"] ...");
+        localServer = new LocalServer("broker.properties", new LinkedBlockingQueue<Mensaje>());
+        try {
+            localServer.start();
+            LOG.info("Servicio inicado");
+        } catch (Exception e) {
+            LOG.error("Servicio no se pudo iniciar", e);
+        }
+    }
 
-    /**
-     * Clase para la intercepcion las seniales USR1 y USR2 desde el Sistema
-     * Operativo.
-     */
-    private static class SignalUSR2Handler implements SignalHandler {
-
-        /*
-         * Metodo handle
-         * @param sig - senial del sistema operativo
-         */
-        public void handle(Signal sig) {
-            LOG.info("Se ha recibido la senial USR2");
+    public static void stop(String[] args) {
+        System.out.println("Deteniendo ["+Arrays.toString(args)+"] ...");
+        if (localServer != null) {
             try {
                 localServer.stop();
+                LOG.info("Servicio detenido");
             } catch (Exception e) {
-                LOG.error("No se pudo detener el server", e);
+                LOG.error("Servicio no se pudo detener", e);
             }
-            System.exit(0);
+        } else {
+            LOG.warn("Servicio no iniciado");
         }
     }
 }
