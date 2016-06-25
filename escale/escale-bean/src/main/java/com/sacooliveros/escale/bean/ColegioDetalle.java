@@ -11,15 +11,17 @@ public class ColegioDetalle {
     private int anio;
     private int grado;
     private int cantidad;
+    private int codTipo;
 
     public ColegioDetalle() {
     }
 
-    public ColegioDetalle(String codigoColegio, int anio, int grado, int cantidad) {
+    public ColegioDetalle(String codigoColegio, int anio, int grado, int cantidad, int codTipo) {
         this.codigoColegio = codigoColegio;
         this.anio = anio;
         this.grado = grado;
         this.cantidad = cantidad;
+        this.codTipo = codTipo;
     }
 
     public String getCodigoColegio() {
@@ -54,13 +56,22 @@ public class ColegioDetalle {
         this.cantidad = cantidad;
     }
 
+    public int getCodTipo() {
+        return codTipo;
+    }
+
+    public void setCodTipo(int codTipo) {
+        this.codTipo = codTipo;
+    }
+
     @Override
     public String toString() {
         return "ColegioDetalle{" +
                 "codigoColegio='" + codigoColegio + '\'' +
-                ", grado=" + grado +
                 ", anio=" + anio +
+                ", grado=" + grado +
                 ", cantidad=" + cantidad +
+                ", codTipo=" + codTipo +
                 '}';
     }
 }

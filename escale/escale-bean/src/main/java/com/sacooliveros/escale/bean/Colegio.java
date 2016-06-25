@@ -16,7 +16,7 @@ public class Colegio {
     private String direccion;
     private String ubigueo;
     private double latitud;
-    private double longitud;
+    private double altitud;
 
     public Colegio() {
     }
@@ -95,12 +95,12 @@ public class Colegio {
         this.latitud = latitud;
     }
 
-    public double getLongitud() {
-        return longitud;
+    public double getAltitud() {
+        return altitud;
     }
 
-    public void setLongitud(double longitud) {
-        this.longitud = longitud;
+    public void setAltitud(double altitud) {
+        this.altitud = altitud;
     }
 
     @Override
@@ -114,7 +114,7 @@ public class Colegio {
                 ", direccion='" + direccion + '\'' +
                 ", ubigueo='" + ubigueo + '\'' +
                 ", latitud=" + latitud +
-                ", longitud=" + longitud +
+                ", altitud=" + altitud +
                 ", detalle=" + (detalle  == null ? detalle : detalle.size())  +
                 '}';
     }

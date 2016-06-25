@@ -12,10 +12,19 @@
         <environment id="development">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
+                <!-- Mysql
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:5432/escale"/>-->
+
+                <!-- Postgres-->
                 <property name="driver" value="org.postgresql.Driver"/>
                 <property name="url" value="jdbc:postgresql://localhost:5432/escale"/>
+
+                <!-- Usuario Conexion BD-->
                 <property name="username" value="postgres"/>
+                <!-- Clave Conexion BD-->
                 <property name="password" value="postgres"/>
+
                 <!-- Configuracion Pool de Conexiones -->
                 <!-- Concurrencia 20 sesiones -->
                 <property name="poolMaximumActiveConnections" value="20"/>

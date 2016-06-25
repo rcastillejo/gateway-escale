@@ -66,6 +66,11 @@
         <appender-ref ref="TRAZADO"/>
     </logger>
 
+    <logger name="com.sacooliveros.escale.dao" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="TRAZADO"/>
+    </logger>
+
     <logger name="com.sacooliveros.escale.log.Logp" additivity="false">
         <level value="INFO" />
         <appender-ref ref="PERFORMANCE" />
