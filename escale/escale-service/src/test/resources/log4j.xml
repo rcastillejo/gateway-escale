@@ -62,17 +62,10 @@
     </appender>
 
     <logger name="com.sacooliveros.escale.service" additivity="false">
-        <level value="TRACE" />
+        <level value="INFO" />
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="TRAZADO"/>
     </logger>
-
-    <logger name="com.sacooliveros.escale.client" additivity="false">
-        <level value="TRACE" />
-        <appender-ref ref="CONSOLE" />
-        <appender-ref ref="TRAZADO"/>
-    </logger>
-
 
     <logger name="com.sacooliveros.escale.log.Logp" additivity="false">
         <level value="INFO" />

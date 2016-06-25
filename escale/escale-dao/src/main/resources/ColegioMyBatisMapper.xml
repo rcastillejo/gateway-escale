@@ -13,7 +13,14 @@
         <result column="latitud" property="latitud" jdbcType="DOUBLE" />
         <result column="longitud" property="longitud" jdbcType="DOUBLE" />
     </resultMap>
-       
+
+    <resultMap id="recordResultDetalleMap" type="com.sacooliveros.escale.bean.ColegioDetalle" >
+        <id column="codmodular" property="codigoColegio" jdbcType="VARCHAR" />
+        <result column="anio" property="anio" jdbcType="INTEGER" />
+        <result column="codgrado" property="grado" jdbcType="INTEGER" />
+        <result column="cantidad" property="cantidad" jdbcType="INTEGER" />
+    </resultMap>
+
     <select id="get" resultMap="recordResultMap">
         SELECT
             codmodular,
@@ -31,6 +38,21 @@
             codmodular = #{codigo}
     </select>
 
+    <select id="getDetalle" resultMap="recordResultDetalleMap">
+        SELECT
+        codmodular,
+        codgrado,
+        anio,
+        cantidad
+        FROM
+        escale_colegios_detalle
+        WHERE
+        codmodular = #{detalle.codigoColegio}
+        And
+        anio = #{detalle.anio}
+        And
+        codgrado = #{detalle.grado}
+    </select>
   
     <insert id="insert">
         Insert into escale_colegios

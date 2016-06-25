@@ -67,7 +67,7 @@ public class EscaleServiceTest {
         filter.addStates("1");
         filter.setStart(0);
 
-        List<Colegio> colegios = escaleService.consultarColegios(filter);
+        List<Colegio> colegios = escaleService.consultarSiguienteGrupoColegios(filter);
         log.debug("Colegios Obtenidos:" + colegios);
 
 
@@ -90,7 +90,7 @@ public class EscaleServiceTest {
         filter.addStates("1");
         filter.setStart(0);
 
-        List<Colegio> colegios = escaleService.consultarColegios(filter);
+        List<Colegio> colegios = escaleService.consultarSiguienteGrupoColegios(filter);
         log.debug("Colegios Obtenidos:" + colegios);
 
 
@@ -126,7 +126,7 @@ public class EscaleServiceTest {
 
         while (escaleService.existeColegiosPorConsultar() && c < 200) {
             //Hilo de lectura
-            List<Colegio> colegios = escaleService.consultarColegios(readerFilter);
+            List<Colegio> colegios = escaleService.consultarSiguienteGrupoColegios(readerFilter);
 
             //Worker
             workerFilter = new Filter();

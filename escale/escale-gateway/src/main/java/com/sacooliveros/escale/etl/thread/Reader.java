@@ -48,7 +48,7 @@ public class Reader implements Runnable {
                 LOG.debug("Procesando colegios [{}]", cantidad);
                 while (escaleService.existeColegiosPorConsultar()) {
                     try {
-                        List<Colegio> colegios = escaleService.consultarColegios(readerFilter);
+                        List<Colegio> colegios = escaleService.consultarSiguienteGrupoColegios(readerFilter);
                         LOG.debug("Colegios consultados [{}]", colegios.size());
                         almacenarMensajes(colegios);
                     } catch (Exception e) {

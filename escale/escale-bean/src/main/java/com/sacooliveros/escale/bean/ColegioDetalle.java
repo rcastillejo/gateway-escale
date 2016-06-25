@@ -12,6 +12,9 @@ public class ColegioDetalle {
     private int grado;
     private int cantidad;
 
+    public ColegioDetalle() {
+    }
+
     public ColegioDetalle(String codigoColegio, int anio, int grado, int cantidad) {
         this.codigoColegio = codigoColegio;
         this.anio = anio;

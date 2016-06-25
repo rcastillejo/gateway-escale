@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface ColegioMyBatisMapper {
     Colegio get(@Param("codigo") String codigo);
+    ColegioDetalle getDetalle(@Param("detalle") ColegioDetalle detalle);
     int insert(Colegio colegio);
     int update(Colegio colegio);
     int insertDetalle(ColegioDetalle colegioDetalle);

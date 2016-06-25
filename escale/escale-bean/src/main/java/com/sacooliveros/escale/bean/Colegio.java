@@ -1,16 +1,12 @@
 package com.sacooliveros.escale.bean;
 
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import java.util.List;
 
 /**
  * Created by Ricardo on 04/06/2016.
  */
 public class Colegio {
-
 
     private String codigo;
     private String codigoLocal;
@@ -21,6 +17,9 @@ public class Colegio {
     private String ubigueo;
     private double latitud;
     private double longitud;
+
+    public Colegio() {
+    }
 
     private List<ColegioDetalle> detalle;
 
@@ -114,8 +113,9 @@ public class Colegio {
                 ", gestion='" + gestion + '\'' +
                 ", direccion='" + direccion + '\'' +
                 ", ubigueo='" + ubigueo + '\'' +
-                ", latitud='" + latitud + '\'' +
-                ", longitud='" + longitud + '\'' +
+                ", latitud=" + latitud +
+                ", longitud=" + longitud +
+                ", detalle=" + (detalle  == null ? detalle : detalle.size())  +
                 '}';
     }
 }

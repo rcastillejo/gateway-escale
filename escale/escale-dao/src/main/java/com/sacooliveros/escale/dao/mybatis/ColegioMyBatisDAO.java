@@ -17,7 +17,7 @@ import java.util.List;
  * Created by Ricardo on 17/06/2016.
  */
 public class ColegioMyBatisDAO implements ColegioDAO {
-    public static final Logger log = LoggerFactory.getLogger(ColegioMyBatisDAO.class);
+    public static final Logger LOG = LoggerFactory.getLogger(ColegioMyBatisDAO.class);
 
     private final SqlSessionFactory sessionFactory;
 
@@ -26,27 +26,65 @@ public class ColegioMyBatisDAO implements ColegioDAO {
     }
 
 
-    @Override
-    public Colegio get(String id) {
-        Colegio model;
+    public void guardarColegio(Colegio model) {
         SqlSession session = null;
         ColegioMyBatisMapper mapper;
 
         try {
+
             session = sessionFactory.openSession();
             mapper = session.getMapper(ColegioMyBatisMapper.class);
-            model = mapper.get(id);
-            log.info("Registro encontrado[{}]", model);
+
+            Colegio colegioEncontrado = get(model.getCodigo(), mapper);
+
+            if (colegioEncontrado == null) {
+                insert(model, mapper);
+                LOG.info("Colegio registrado [" + model + "]");
+            } else {
+                update(model, mapper);
+                LOG.info("Colegio actualizado [" + model + "]");
+            }
+
+            session.commit();
+
+        } catch (Exception e) {
+            if (session != null) {
+                session.rollback();
+            }
+            throw new DAOException("Error al guardar colegio", e);
+        } finally {
+            closeConnection(session);
+        }
+    }
+
+    private Colegio get(String id, ColegioMyBatisMapper mapper) {
+        try{
+            Colegio model = mapper.get(id);
+            LOG.info("Registro encontrado[{}]", model);
             return model;
         } catch (Exception e) {
             throw new DAOException("Error al consultar", e);
-        } finally {
-            closeConnection(session);
         }
     }
 
-    public void insert(Colegio model) {
+    private void insert(Colegio model, ColegioMyBatisMapper mapper) {
+        LOG.debug("Registrando [{}] ...", model);
+        if (mapper.insert(model) == 0) {
+            throw new DataNotRegisterDAOException("No se pudo registrar [" + model + "]");
+        }
+        LOG.info("Registrado [{}]", model);
+    }
 
+    private void update(Colegio model,  ColegioMyBatisMapper mapper) {
+        LOG.debug("Registrando [{}] ...", model);
+        if (mapper.update(model) == 0) {
+            throw new DataNotRegisterDAOException("No se pudo actualizar [" + model + "]");
+        }
+        LOG.info("Registrado [{}]", model);
+    }
+
+
+    public void guardarDetalles(List<ColegioDetalle> models) {
         SqlSession session = null;
         ColegioMyBatisMapper mapper;
 
@@ -54,94 +92,63 @@ public class ColegioMyBatisDAO implements ColegioDAO {
             session = sessionFactory.openSession();
             mapper = session.getMapper(ColegioMyBatisMapper.class);
 
-            log.debug("Registrando [{}] ...", model);
-            if (mapper.insert(model) == 0) {
-                throw new DataNotRegisterDAOException("No se pudo registrar ["+model+"]");
-            }
-
-            if (model.getDetalle() != null) {
-                insert(model.getDetalle(), mapper);
+            for (ColegioDetalle detalle : models) {
+                guardarDetalle(detalle, mapper);
             }
 
             session.commit();
-            log.info("Registrado [{}]", model);
 
         } catch (Exception e) {
             if (session != null) {
                 session.rollback();
             }
-            throw new DAOException("Error al grabar", e);
+            throw new DAOException("Error al guardar detalles", e);
         } finally {
             closeConnection(session);
         }
     }
 
-
-    public void insert(List<ColegioDetalle> model, ColegioMyBatisMapper mapper) {
-
-        for (ColegioDetalle detalle: model) {
-
-            log.debug("Registrando [{}] ...", model);
-            if (mapper.insertDetalle(detalle) == 0) {
-                throw new DataNotRegisterDAOException("No se pudo registrar ["+detalle+"]");
-            }
-            log.info("Registrado [{}]", model);
-        }
-
-    }
-
-
-    public void update(Colegio model) {
-
-        SqlSession session = null;
-        ColegioMyBatisMapper mapper;
-
+    private void guardarDetalle(ColegioDetalle model, ColegioMyBatisMapper mapper) {
         try {
-            session = sessionFactory.openSession();
-            mapper = session.getMapper(ColegioMyBatisMapper.class);
-
-            log.debug("Registrando [{}] ...", model);
-            if (mapper.update(model) == 0) {
-                throw new DataNotRegisterDAOException("No se pudo registrar ["+model+"]");
+            ColegioDetalle detalleEncontrado = getDetalle(model, mapper);
+            if (detalleEncontrado == null) {
+                insert(model, mapper);
+            } else {
+                update(model, mapper);
             }
-
-            if (model.getDetalle() != null) {
-                update(model.getDetalle(), mapper);
-            }
-
-            session.commit();
-            log.info("Registrado [{}]", model);
-
         } catch (Exception e) {
-            if (session != null) {
-                session.rollback();
-            }
-            throw new DAOException("Error al grabar", e);
-        } finally {
-            closeConnection(session);
+            LOG.warn("No se pudo guardar el detalle [" + model + "]", e);
         }
     }
 
+    private ColegioDetalle getDetalle(ColegioDetalle model, ColegioMyBatisMapper mapper) {
+        ColegioDetalle modelEncontrado;
+        modelEncontrado = mapper.getDetalle(model);
+        LOG.info("Detalle encontrado[{}]", modelEncontrado);
+        return modelEncontrado;
+    }
 
-    public void update(List<ColegioDetalle> model, ColegioMyBatisMapper mapper) {
-
-        for (ColegioDetalle detalle: model) {
-
-            log.debug("Registrando [{}] ...", model);
-            if (mapper.updateDetalle(detalle) == 0) {
-                log.warn("Registro no se pudo actualizar, procediendo a registrar");
-                mapper.insertDetalle(detalle);
-            }
-            log.info("Registrado [{}]", model);
+    private void insert(ColegioDetalle model, ColegioMyBatisMapper mapper) {
+        LOG.debug("Registrando [{}] ...", model);
+        if (mapper.insertDetalle(model) == 0) {
+            throw new DataNotRegisterDAOException("No se pudo registrar [" + model + "]");
         }
+        LOG.info("Registrado [{}]", model);
 
     }
 
-    public void closeConnection(SqlSession session) {
+    private void update(ColegioDetalle model, ColegioMyBatisMapper mapper) {
+        LOG.debug("Actualizando [{}] ...", model);
+        if (mapper.updateDetalle(model) == 0) {
+            throw new DataNotRegisterDAOException("No se pudo actualizar  [" + model + "]");
+        }
+        LOG.info("Actualizado [{}]", model);
+    }
+
+    private void closeConnection(SqlSession session) {
         if (session != null) {
             session.close();
         }
     }
-
 
 }

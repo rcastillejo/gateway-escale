@@ -6,6 +6,7 @@ import com.sacooliveros.escale.client.Filter;
 import com.sacooliveros.escale.etl.config.ServerConfiguration;
 import com.sacooliveros.escale.etl.message.Mensaje;
 import com.sacooliveros.escale.service.EscaleService;
+import com.sacooliveros.escale.service.exception.EscaleServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,11 +33,11 @@ public class Worker implements Runnable {
         this.createFilter(config);
     }
 
+
     private void createFilter(ServerConfiguration config) {
         workerFilter = new Filter();
         workerFilter.setExpandLevel(config.getExpandLevel());
     }
-
 
     @Override
     public void run() {
@@ -46,17 +47,9 @@ public class Worker implements Runnable {
 
                 Mensaje mensaje = obtenerMensaje();
 
-                Filter filter = workerFilter.clone();
+                procesarColegio(mensaje);
 
-                for (String year: mensaje.getYears()) {
-                    filter.setYear(year);
-                    Colegio colegio = mensaje.getColegio();
-
-                    List<ColegioDetalle> detalle = escaleService.consultarDetalleColegio(colegio, filter);
-                    colegio.setDetalle(detalle);
-
-                    escaleService.guardarColegio(colegio);
-                }
+                procesarDetallesPorAnio(mensaje);
 
             } catch (Exception e) {
                 LOG.error("Error del Sistema", e);
@@ -64,6 +57,29 @@ public class Worker implements Runnable {
         }
     }
 
+    private void procesarColegio(Mensaje mensaje){
+        Colegio colegio = mensaje.getColegio();
+        escaleService.guardarColegio(colegio);
+    }
+
+    private void procesarDetallesPorAnio(Mensaje mensaje){
+        Colegio colegio = mensaje.getColegio();
+        Filter filter = workerFilter.clone();
+
+        for (String year : mensaje.getYears()) {
+            filter.setYear(year);
+            procesarDetalle(filter, colegio);
+        }
+    }
+
+    private void procesarDetalle(Filter filter, Colegio colegio) {
+        try {
+            List<ColegioDetalle> detalle = escaleService.consultarDetalleColegio(colegio, filter);
+            escaleService.guardarDetalleColegio(detalle);
+        } catch (EscaleServiceException e) {
+            LOG.warn("No se proceso el detalle del Colegio [" + colegio.getCodigo() + "] en el anio [" + filter.getYear() + "]", e);
+        }
+    }
 
     /**
      * Lee el mensaje de cola de comunicacion cada 1 segundo
