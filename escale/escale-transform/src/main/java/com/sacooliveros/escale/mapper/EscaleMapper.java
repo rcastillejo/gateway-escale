@@ -21,7 +21,9 @@ public class EscaleMapper {
     public static final int PRIMARIA_INDICE_INICIAL = 9; // + 8 Grados de Inicial
     public static final int SECUNDARIA_INDICE_INICIAL = 15; // + 6 Grados de Primaria
     public static final Logger LOG = LoggerFactory.getLogger(EscaleMapper.class);
+
     private PropertiesMapper propertiesMapper;
+
     public static EscaleMapper newInstace(Properties config){
         return new EscaleMapper(new PropertiesMapper(config));
     }

@@ -19,7 +19,7 @@
         <result column="anio" property="anio" jdbcType="INTEGER" />
         <result column="codgrado" property="grado" jdbcType="INTEGER" />
         <result column="cantidad" property="cantidad" jdbcType="INTEGER" />
-        <result column="codTipo" property="codTipo" jdbcType="INTEGER" />
+        <result column="codtipo" property="codTipo" jdbcType="INTEGER" />
     </resultMap>
 
     <select id="get" resultMap="recordResultMap">
@@ -45,7 +45,7 @@
         codgrado,
         anio,
         cantidad,
-        codTipo
+        codtipo
         FROM
         escale_colegios_detalle
         WHERE
@@ -65,7 +65,7 @@
 
     <insert id="insertDetalle">
         Insert into escale_colegios_detalle
-        (codmodular, codgrado, anio, cantidad, codTipo)
+        (codmodular, codgrado, anio, cantidad, codtipo)
         values
         (#{codigoColegio},#{grado},#{anio},#{cantidad}, #{codTipo})
     </insert>
@@ -76,7 +76,7 @@
         Set
             codlocal = #{codigoLocal},
             nombre = #{nombre},
-            codNivel = #{codigoNivel},
+            codnivel = #{codigoNivel},
             gestion = #{gestion},
             direccion = #{direccion},
             ubigeo = #{ubigueo},
@@ -91,7 +91,7 @@
             escale_colegios_detalle
         Set
             cantidad = #{cantidad},
-            codTipo = #{codTipo}
+            codtipo = #{codTipo}
         Where
             codmodular = #{codigoColegio}
         and codgrado = #{grado}

@@ -1,7 +1,7 @@
 package com.sacooliveros.escale.etl.thread;
 
-import com.sacooliveros.escale.bean.Colegio;
 import com.sacooliveros.escale.client.Filter;
+import com.sacooliveros.escale.client.dto.Institucion;
 import com.sacooliveros.escale.etl.config.ServerConfiguration;
 import com.sacooliveros.escale.etl.message.Mensaje;
 import com.sacooliveros.escale.etl.util.Identificador;
@@ -48,27 +48,27 @@ public class Reader implements Runnable {
                 LOG.debug("Procesando colegios [{}]", cantidad);
                 while (escaleService.existeColegiosPorConsultar()) {
                     try {
-                        List<Colegio> colegios = escaleService.consultarSiguienteGrupoColegios(readerFilter);
+                        List<Institucion> colegios = escaleService.consultarSiguienteGrupoColegios(readerFilter);
                         LOG.debug("Colegios consultados [{}]", colegios.size());
                         almacenarMensajes(colegios);
                     } catch (Exception e) {
                         LOG.error("Error al consultar los colegios", e);
                     }
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 LOG.error("Error del Sistema", e);
             }
 
         }
     }
 
-    private void almacenarMensajes(List<Colegio> colegios){
-        for (Colegio colegio : colegios) {
+    private void almacenarMensajes(List<Institucion> colegios) {
+        for (Institucion colegio : colegios) {
             almacenarMensaje(colegio);
         }
     }
 
-    private void almacenarMensaje(Colegio colegio) {
+    private void almacenarMensaje(Institucion colegio) {
         Mensaje mensaje = new Mensaje();
         mensaje.setId(identificador.getCode());
         mensaje.setColegio(colegio);

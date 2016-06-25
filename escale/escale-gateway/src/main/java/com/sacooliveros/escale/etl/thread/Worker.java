@@ -1,10 +1,11 @@
 package com.sacooliveros.escale.etl.thread;
 
-import com.sacooliveros.escale.bean.Colegio;
 import com.sacooliveros.escale.bean.ColegioDetalle;
 import com.sacooliveros.escale.client.Filter;
+import com.sacooliveros.escale.client.dto.Institucion;
 import com.sacooliveros.escale.etl.config.ServerConfiguration;
 import com.sacooliveros.escale.etl.message.Mensaje;
+import com.sacooliveros.escale.log.Logp;
 import com.sacooliveros.escale.service.EscaleService;
 import com.sacooliveros.escale.service.exception.EscaleServiceException;
 import org.slf4j.Logger;
@@ -51,19 +52,20 @@ public class Worker implements Runnable {
 
                 procesarDetallesPorAnio(mensaje);
 
+                Logp.showTrx(mensaje.getId(), "PROCESAR", mensaje.getInit());
             } catch (Exception e) {
                 LOG.error("Error del Sistema", e);
             }
         }
     }
 
-    private void procesarColegio(Mensaje mensaje){
-        Colegio colegio = mensaje.getColegio();
-        escaleService.guardarColegio(colegio);
+    private void procesarColegio(Mensaje mensaje) {
+        Institucion colegio = mensaje.getColegio();
+        escaleService.transformarGuardarColegio(colegio);
     }
 
-    private void procesarDetallesPorAnio(Mensaje mensaje){
-        Colegio colegio = mensaje.getColegio();
+    private void procesarDetallesPorAnio(Mensaje mensaje) {
+        Institucion colegio = mensaje.getColegio();
         Filter filter = workerFilter.clone();
 
         for (String year : mensaje.getYears()) {
@@ -72,7 +74,7 @@ public class Worker implements Runnable {
         }
     }
 
-    private void procesarDetalle(Filter filter, Colegio colegio) {
+    private void procesarDetalle(Filter filter, Institucion colegio) {
         try {
             List<ColegioDetalle> detalle = escaleService.consultarDetalleColegio(colegio, filter);
             escaleService.guardarDetalleColegio(detalle);
@@ -94,6 +96,7 @@ public class Worker implements Runnable {
                 LOG.trace("Verificando mensaje de la cola");
                 mensaje = cola.poll(1, TimeUnit.SECONDS);
                 if (mensaje != null) {
+                    Logp.showTrx(mensaje.getId(), "EN_COLA", mensaje.getInit());
                     break;
                 }
             } catch (InterruptedException e) {

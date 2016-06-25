@@ -131,6 +131,10 @@ public class ServerConfiguration {
         return instituteBlock;
     }
 
+    public Properties getConfig() {
+        return config;
+    }
+
     @Override
     public String toString() {
         return "ServerConfiguration{" + "brokerName=" + brokerName + ", timeForThreads=" + timeForThreads + ", brokerInterval=" + brokerInterval + ", numThreads=" + numThreads + ", serverName=" + serverName + '}';

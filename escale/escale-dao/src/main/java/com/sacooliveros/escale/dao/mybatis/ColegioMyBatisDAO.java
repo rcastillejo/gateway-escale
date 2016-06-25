@@ -6,6 +6,7 @@ import com.sacooliveros.escale.bean.ColegioDetalle;
 import com.sacooliveros.escale.dao.ColegioDAO;
 import com.sacooliveros.escale.dao.exception.DAOException;
 import com.sacooliveros.escale.dao.exception.DataNotRegisterDAOException;
+import com.sacooliveros.escale.log.Logp;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
@@ -59,8 +60,10 @@ public class ColegioMyBatisDAO implements ColegioDAO {
 
     private Colegio get(String id, ColegioMyBatisMapper mapper) {
         try{
+            long init = System.currentTimeMillis();
             Colegio model = mapper.get(id);
             LOG.info("Registro encontrado[{}]", model);
+            Logp.show("GET_COLEGIO", init);
             return model;
         } catch (Exception e) {
             throw new DAOException("Error al consultar", e);
@@ -68,18 +71,22 @@ public class ColegioMyBatisDAO implements ColegioDAO {
     }
 
     private void insert(Colegio model, ColegioMyBatisMapper mapper) {
+        long init = System.currentTimeMillis();
         LOG.debug("Registrando [{}] ...", model);
         if (mapper.insert(model) == 0) {
             throw new DataNotRegisterDAOException("No se pudo registrar [" + model + "]");
         }
+        Logp.show("INSERT_COLEGIO", init);
         LOG.info("Registrado [{}]", model);
     }
 
     private void update(Colegio model,  ColegioMyBatisMapper mapper) {
+        long init = System.currentTimeMillis();
         LOG.debug("Registrando [{}] ...", model);
         if (mapper.update(model) == 0) {
             throw new DataNotRegisterDAOException("No se pudo actualizar [" + model + "]");
         }
+        Logp.show("UPDATE_COLEGIO", init);
         LOG.info("Registrado [{}]", model);
     }
 
@@ -117,31 +124,37 @@ public class ColegioMyBatisDAO implements ColegioDAO {
                 update(model, mapper);
             }
         } catch (Exception e) {
-            LOG.warn("No se pudo guardar el detalle [" + model + "]", e);
+            LOG.error("No se pudo guardar el detalle [" + model + "]", e);
         }
     }
 
     private ColegioDetalle getDetalle(ColegioDetalle model, ColegioMyBatisMapper mapper) {
+        long init = System.currentTimeMillis();
         ColegioDetalle modelEncontrado;
         modelEncontrado = mapper.getDetalle(model);
         LOG.info("Detalle encontrado[{}]", modelEncontrado);
+        Logp.show("GET_DETALLE", init);
         return modelEncontrado;
     }
 
     private void insert(ColegioDetalle model, ColegioMyBatisMapper mapper) {
+        long init = System.currentTimeMillis();
         LOG.debug("Registrando [{}] ...", model);
         if (mapper.insertDetalle(model) == 0) {
             throw new DataNotRegisterDAOException("No se pudo registrar [" + model + "]");
         }
+        Logp.show("UPDATE_COLEGIO", init);
         LOG.info("Registrado [{}]", model);
 
     }
 
     private void update(ColegioDetalle model, ColegioMyBatisMapper mapper) {
+        long init = System.currentTimeMillis();
         LOG.debug("Actualizando [{}] ...", model);
         if (mapper.updateDetalle(model) == 0) {
             throw new DataNotRegisterDAOException("No se pudo actualizar  [" + model + "]");
         }
+        Logp.show("UPDATE_DETALLE", init);
         LOG.info("Actualizado [{}]", model);
     }
 

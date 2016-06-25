@@ -66,7 +66,7 @@ public class LocalServer {
 
     private void executeWorker(ThreadPoolExecutor threadPool, ServerConfiguration config, BlockingQueue<Mensaje> colaAtencion) {
         EscaleService service = EscaleServiceBuilder.newInstaceForWorker(
-                RestEscaleClientService.newInstance(config.getClientConfig()),
+                RestEscaleClientService.newInstance(config.getClientConfig()), config.getConfig(),
                 this.daoFactory.getColegioDAO());
 
         Runnable worker = ThreadBuilder.newInstaceWorker(config, colaAtencion, service);
@@ -79,7 +79,7 @@ public class LocalServer {
 
         LOG.info("Iniciando Configuracion del Reader");
         EscaleService service = EscaleServiceBuilder.newInstaceForReader(
-                RestEscaleClientService.newInstance(config.getClientConfig()),
+                RestEscaleClientService.newInstance(config.getClientConfig()), config.getConfig(),
                 this.daoFactory.getColegioDAO(),
                 config.getInstituteBlock());
 

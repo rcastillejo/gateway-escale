@@ -6,6 +6,7 @@
 package com.sacooliveros.escale.etl.message;
 
 import com.sacooliveros.escale.bean.Colegio;
+import com.sacooliveros.escale.client.dto.Institucion;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,8 +17,18 @@ import java.util.List;
 public class Mensaje {
 
     private String id;
-    private Colegio colegio;
+    private Institucion colegio;
     private String[] years;
+    private long init;
+
+    public Mensaje() {
+        init();
+    }
+
+    public void init(){
+        init = System.currentTimeMillis();
+    }
+
 
     public String getId() {
         return id;
@@ -27,11 +38,11 @@ public class Mensaje {
         this.id = id;
     }
 
-    public Colegio getColegio() {
+    public Institucion getColegio() {
         return colegio;
     }
 
-    public void setColegio(Colegio colegio) {
+    public void setColegio(Institucion colegio) {
         this.colegio = colegio;
     }
 
@@ -41,6 +52,10 @@ public class Mensaje {
 
     public void setYears(String[] year) {
         this.years = year;
+    }
+
+    public long getInit() {
+        return init;
     }
 
     @Override

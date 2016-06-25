@@ -62,7 +62,13 @@
     </appender>
 
     <logger name="com.sacooliveros.escale.service" additivity="false">
-        <level value="INFO" />
+        <level value="DEBUG" />
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="TRAZADO"/>
+    </logger>
+
+    <logger name="com.sacooliveros.escale.dao" additivity="false">
+        <level value="DEBUG" />
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="TRAZADO"/>
     </logger>

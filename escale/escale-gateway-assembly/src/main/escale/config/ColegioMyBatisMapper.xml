@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sacooliveros.escale.dao.mybatis.ColegioMyBatisMapper" >
-    
+
     <resultMap id="recordResultMap" type="com.sacooliveros.escale.bean.Colegio" >
         <id column="codmodular" property="codigo" jdbcType="VARCHAR" />
         <result column="codlocal" property="codigoLocal" jdbcType="VARCHAR" />
@@ -19,24 +19,24 @@
         <result column="anio" property="anio" jdbcType="INTEGER" />
         <result column="codgrado" property="grado" jdbcType="INTEGER" />
         <result column="cantidad" property="cantidad" jdbcType="INTEGER" />
-        <result column="codTipo" property="codTipo" jdbcType="INTEGER" />
+        <result column="codtipo" property="codTipo" jdbcType="INTEGER" />
     </resultMap>
 
     <select id="get" resultMap="recordResultMap">
         SELECT
-            codmodular,
-            codlocal,
-            nombre,
-            codnivel,
-            gestion,
-            direccion,
-            ubigeo,
-            latitud,
-            altitud
+        codmodular,
+        codlocal,
+        nombre,
+        codnivel,
+        gestion,
+        direccion,
+        ubigeo,
+        latitud,
+        altitud
         FROM
-            escale_colegios
+        escale_colegios
         WHERE
-            codmodular = #{codigo}
+        codmodular = #{codigo}
     </select>
 
     <select id="getDetalle" resultMap="recordResultDetalleMap">
@@ -45,7 +45,7 @@
         codgrado,
         anio,
         cantidad,
-        codTipo
+        codtipo
         FROM
         escale_colegios_detalle
         WHERE
@@ -55,45 +55,45 @@
         And
         codgrado = #{detalle.grado}
     </select>
-  
+
     <insert id="insert">
         Insert into escale_colegios
-            (codmodular, codlocal, nombre, codnivel, gestion, direccion, ubigeo, latitud, altitud)
+        (codmodular, codlocal, nombre, codnivel, gestion, direccion, ubigeo, latitud, altitud)
         values
-            (#{codigo},#{codigoLocal},#{nombre},#{codigoNivel},#{gestion},#{direccion},#{ubigueo},#{latitud},#{altitud})
+        (#{codigo},#{codigoLocal},#{nombre},#{codigoNivel},#{gestion},#{direccion},#{ubigueo},#{latitud},#{altitud})
     </insert>
 
     <insert id="insertDetalle">
         Insert into escale_colegios_detalle
-        (codmodular, codgrado, anio, cantidad, codTipo)
+        (codmodular, codgrado, anio, cantidad, codtipo)
         values
         (#{codigoColegio},#{grado},#{anio},#{cantidad}, #{codTipo})
     </insert>
 
     <update id="update">
         Update
-            escale_colegios
+        escale_colegios
         Set
-            codlocal = #{codigoLocal},
-            nombre = #{nombre},
-            codNivel = #{codigoNivel},
-            gestion = #{gestion},
-            direccion = #{direccion},
-            ubigeo = #{ubigueo},
-            latitud = #{latitud},
-            altitud = #{altitud}
+        codlocal = #{codigoLocal},
+        nombre = #{nombre},
+        codnivel = #{codigoNivel},
+        gestion = #{gestion},
+        direccion = #{direccion},
+        ubigeo = #{ubigueo},
+        latitud = #{latitud},
+        altitud = #{altitud}
         Where
-            codmodular=#{codigo}
+        codmodular=#{codigo}
     </update>
 
     <insert id="updateDetalle">
         Update
-            escale_colegios_detalle
+        escale_colegios_detalle
         Set
-            cantidad = #{cantidad},
-            codTipo = #{codTipo}
+        cantidad = #{cantidad},
+        codtipo = #{codTipo}
         Where
-            codmodular = #{codigoColegio}
+        codmodular = #{codigoColegio}
         and codgrado = #{grado}
         and anio = #{anio}
     </insert>
