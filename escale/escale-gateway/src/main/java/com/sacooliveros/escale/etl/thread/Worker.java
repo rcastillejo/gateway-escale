@@ -4,16 +4,19 @@ import com.sacooliveros.escale.bean.ColegioDetalle;
 import com.sacooliveros.escale.client.Filter;
 import com.sacooliveros.escale.client.dto.Institucion;
 import com.sacooliveros.escale.etl.config.ServerConfiguration;
+import com.sacooliveros.escale.etl.exception.MessageNotFoundException;
 import com.sacooliveros.escale.etl.message.Mensaje;
 import com.sacooliveros.escale.log.Logp;
 import com.sacooliveros.escale.service.EscaleService;
 import com.sacooliveros.escale.service.exception.EscaleServiceException;
+import com.sacooliveros.escale.service.exception.InstituteDetailNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by Ricardo on 19/06/2016.
@@ -21,16 +24,16 @@ import java.util.concurrent.TimeUnit;
 public class Worker implements Runnable {
     public static final Logger LOG = LoggerFactory.getLogger(Worker.class);
 
-    private boolean reading;
     private EscaleService escaleService;
     private Filter workerFilter;
     private BlockingQueue<Mensaje> cola;
+    private AtomicBoolean workersEnable;
 
 
-    public Worker(EscaleService escaleService, ServerConfiguration config, BlockingQueue<Mensaje> cola) {
+    public Worker(EscaleService escaleService, ServerConfiguration config, BlockingQueue<Mensaje> cola, AtomicBoolean workersEnable) {
         this.escaleService = escaleService;
         this.cola = cola;
-        this.reading = Boolean.TRUE;
+        this.workersEnable = workersEnable;
         this.createFilter(config);
     }
 
@@ -43,7 +46,7 @@ public class Worker implements Runnable {
     @Override
     public void run() {
 
-        while (reading) {
+        while (workersEnable.get()) {
             try {
 
                 Mensaje mensaje = obtenerMensaje();
@@ -53,6 +56,8 @@ public class Worker implements Runnable {
                 procesarDetallesPorAnio(mensaje);
 
                 Logp.showTrx(mensaje.getId(), "PROCESAR", mensaje.getInit());
+            } catch (MessageNotFoundException e) {
+                LOG.warn("No se encontro más colegios a leer");
             } catch (Exception e) {
                 LOG.error("Error del Sistema", e);
             }
@@ -78,8 +83,10 @@ public class Worker implements Runnable {
         try {
             List<ColegioDetalle> detalle = escaleService.consultarDetalleColegio(colegio, filter);
             escaleService.guardarDetalleColegio(detalle);
+        } catch (InstituteDetailNotFoundException e) {
+            LOG.warn("No se encontro el detalle del Colegio [" + e.getCodigoColegio() + "] en el anio [" + filter.getYear() + "]", e);
         } catch (EscaleServiceException e) {
-            LOG.warn("No se proceso el detalle del Colegio [" + colegio.getCodigo() + "] en el anio [" + filter.getYear() + "]", e);
+            LOG.error("No se proceso el detalle del Colegio [" + colegio.getCodigo() + "] en el anio [" + filter.getYear() + "]", e);
         }
     }
 
@@ -89,9 +96,9 @@ public class Worker implements Runnable {
      * @return Mensaje
      */
     public Mensaje obtenerMensaje() {
-        Mensaje mensaje;
+        Mensaje mensaje = null;
         LOG.trace("Esperando leer de la cola ...");
-        while (true) {
+        while (workersEnable.get()) {
             try {
                 LOG.trace("Verificando mensaje de la cola");
                 mensaje = cola.poll(1, TimeUnit.SECONDS);
@@ -104,8 +111,14 @@ public class Worker implements Runnable {
             }
         }
 
-        LOG.debug("Mensaje obtenido de la cola [" + mensaje + "]s");
+        if (mensaje != null) {
 
-        return mensaje;
+            LOG.debug("Mensaje obtenido de la cola [" + mensaje + "]s");
+
+            return mensaje;
+        } else {
+            throw new MessageNotFoundException("No se obtuvo colegio a leer");
+        }
+
     }
 }

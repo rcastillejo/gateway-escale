@@ -57,6 +57,7 @@ public class RestEscaleClientService implements EscaleClientService {
     @Override
     public int getInstitutesCount(Filter filter) {
         try {
+
             LOGGER.debug("Consultando la cantidad de instituciones [" + filter + "]");
             WebResource service = client.resource(config.getUrl())
                     .path(config.getPathCount());
@@ -89,6 +90,7 @@ public class RestEscaleClientService implements EscaleClientService {
     @Override
     public InstitucionesResponse getInstitutes(Filter filter) {
         try {
+
             WebResource service = client.resource(config.getUrl())
                     .path(config.getPathInstitutes());
             if(filter != null){
@@ -118,6 +120,7 @@ public class RestEscaleClientService implements EscaleClientService {
     @Override
     public InstitucionResponse getInstituteDetails(String codigo, Filter filter) {
         try {
+
             LOGGER.debug("Consultando las instituciones [codigo=" + codigo + ", filtro=" + filter + "]");
             WebResource service = client.resource(config.getUrl())
                     .path(MessageFormat.format(config.getPathInstituteDetail(), codigo));

@@ -66,16 +66,16 @@ public class EscaleMapper {
         return colegio;
     }
 
-    public List<ColegioDetalle> mapFrom(InstitucionResponse institucionResponse, String anio){
+    public List<ColegioDetalle> mapFrom(String codigoColegio, InstitucionResponse institucionResponse, String anio){
         List<ColegioDetalle> detalle = null;
         int anioDetalle = Integer.parseInt(anio);
         int codigoTipo = propertiesMapper.getTipoDetalle();
         if(institucionResponse.getInicial() != null) {
-            detalle = mapInicial(institucionResponse.getCodigo(), anioDetalle,institucionResponse.getInicial(), codigoTipo);
+            detalle = mapInicial(codigoColegio, anioDetalle,institucionResponse.getInicial(), codigoTipo);
         } else if(institucionResponse.getPrimaria() != null) {
-            detalle = mapPrimaria(institucionResponse.getCodigo(), anioDetalle, institucionResponse.getPrimaria(), codigoTipo);
+            detalle = mapPrimaria(codigoColegio, anioDetalle, institucionResponse.getPrimaria(), codigoTipo);
         } else if(institucionResponse.getSecundaria() != null) {
-            detalle = mapSecundaria(institucionResponse.getCodigo(), anioDetalle, institucionResponse.getSecundaria(), codigoTipo);
+            detalle = mapSecundaria(codigoColegio, anioDetalle, institucionResponse.getSecundaria(), codigoTipo);
         }
         return detalle;
     }

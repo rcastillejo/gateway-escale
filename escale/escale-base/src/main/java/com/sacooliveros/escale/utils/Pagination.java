@@ -69,6 +69,10 @@ public final class Pagination {
         return currentBlockCount;
     }
 
+    public int getLeftBlockSize(){
+        return totalSize - currentBlockSize;
+    }
+
     @Override
     public String toString() {
         return "Pagination{" +

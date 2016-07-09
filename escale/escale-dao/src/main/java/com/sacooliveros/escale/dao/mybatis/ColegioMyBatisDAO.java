@@ -27,13 +27,17 @@ public class ColegioMyBatisDAO implements ColegioDAO {
     }
 
 
+    private synchronized SqlSession getConnection(){
+        return sessionFactory.openSession();
+    }
+
     public void guardarColegio(Colegio model) {
         SqlSession session = null;
         ColegioMyBatisMapper mapper;
 
         try {
 
-            session = sessionFactory.openSession();
+            session = getConnection();
             mapper = session.getMapper(ColegioMyBatisMapper.class);
 
             Colegio colegioEncontrado = get(model.getCodigo(), mapper);
@@ -96,7 +100,7 @@ public class ColegioMyBatisDAO implements ColegioDAO {
         ColegioMyBatisMapper mapper;
 
         try {
-            session = sessionFactory.openSession();
+            session = getConnection();
             mapper = session.getMapper(ColegioMyBatisMapper.class);
 
             for (ColegioDetalle detalle : models) {

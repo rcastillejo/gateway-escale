@@ -7,9 +7,11 @@ import com.sacooliveros.escale.client.Filter;
 import com.sacooliveros.escale.client.dto.Institucion;
 import com.sacooliveros.escale.client.dto.InstitucionResponse;
 import com.sacooliveros.escale.client.dto.InstitucionesResponse;
+import com.sacooliveros.escale.client.exception.InstitutesNotFoundException;
 import com.sacooliveros.escale.dao.ColegioDAO;
 import com.sacooliveros.escale.mapper.EscaleMapper;
 import com.sacooliveros.escale.service.exception.EscaleServiceException;
+import com.sacooliveros.escale.service.exception.InstituteDetailNotFoundException;
 import com.sacooliveros.escale.utils.Pagination;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,6 +82,14 @@ public class EscaleService {
         return response.getItems();
     }
 
+    public int leidos(){
+        return pagination.getCurrentBlockSize();
+    }
+
+    public int pendientes(){
+        return pagination.getLeftBlockSize();
+    }
+
     private void validarColegios(InstitucionesResponse response) {
         if (response == null || response.getItems() == null || response.getItems().isEmpty()) {
             throw new EscaleServiceException("No encontraron colegios [" + response + "]");
@@ -95,19 +105,20 @@ public class EscaleService {
         colegioFilter = filter.clone();
         colegioFilter.setPrefixLevel(colegio.getNivelModalidad().getCodigo());
 
+        LOG.info("Detalle de colegio [request=" + colegio.getCodigo()+", filter="+colegioFilter+"]");
         response = client.getInstituteDetails(colegio.getCodigo(), colegioFilter);
-        LOG.info("Detalle de colegio [response detalle=" + response+"]");
-        colegioDetalle = escaleMapper.mapFrom(response, colegioFilter.getYear());
+        LOG.info("Detalle de colegio [response="+colegio.getCodigo()+", detalle=" + response+"]");
+        colegioDetalle = escaleMapper.mapFrom(colegio.getCodigo(), response, colegioFilter.getYear());
 
-        validarDetalleColegio(colegioDetalle);
+        validarDetalleColegio(colegio.getCodigo(), colegioDetalle);
 
         LOG.info("Detalle de colegio consultado [filtros=" + colegioFilter + ", colegios=" + (colegioDetalle == null ? colegioDetalle : colegioDetalle.size()) + "]");
         return colegioDetalle;
     }
 
-    private void validarDetalleColegio(List<ColegioDetalle> detalle) {
+    private void validarDetalleColegio(String codigoColegio, List<ColegioDetalle> detalle) {
         if (detalle == null || detalle.isEmpty()) {
-            throw new EscaleServiceException("No encontraron detalles del colegio");
+            throw new InstituteDetailNotFoundException(codigoColegio, "No encontraron detalles del colegio");
         }
     }
 

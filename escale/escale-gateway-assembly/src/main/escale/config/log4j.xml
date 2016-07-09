@@ -61,6 +61,11 @@
         </layout>
     </appender>
 
+    <logger name="com.sacooliveros.escale.etl" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
     <logger name="com.sacooliveros.escale.service" additivity="false">
         <level value="INFO" />
         <appender-ref ref="TRAZADO"/>
