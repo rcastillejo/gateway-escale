@@ -81,6 +81,19 @@ public class EscaleMapper {
     }
 
 
+    public List<ColegioDetalle> mapFrom(String codigoColegio, String anio) {
+        List<ColegioDetalle> detalle = new ArrayList<ColegioDetalle>();
+        int anioDetalle = Integer.parseInt(anio);
+        int codigoTipo = propertiesMapper.getTipoDetalle();
+
+        detalle.addAll(mapInicial(codigoColegio, anioDetalle, codigoTipo));
+        detalle.addAll(mapPrimaria(codigoColegio, anioDetalle, codigoTipo));
+        detalle.addAll(mapSecundaria(codigoColegio, anioDetalle, codigoTipo));
+
+        return detalle;
+    }
+
+
     private List<ColegioDetalle> mapInicial(String codigo, int anio, DetalleModalidad detalleModalidadResponse, int codigoTipo){
         int grado = INICIAL_INDICE_INICIAL;
         List<ColegioDetalle> inicialDetalle = new ArrayList<ColegioDetalle>();
@@ -116,6 +129,45 @@ public class EscaleMapper {
         inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, detalleModalidadResponse.getMatr03(), codigoTipo));
         inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, detalleModalidadResponse.getMatr04(), codigoTipo));
         inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, detalleModalidadResponse.getMatr05(), codigoTipo));
+        return inicialDetalle;
+    }
+
+
+    private List<ColegioDetalle> mapInicial(String codigo, int anio, int codigoTipo){
+        int grado = INICIAL_INDICE_INICIAL;
+        List<ColegioDetalle> inicialDetalle = new ArrayList<ColegioDetalle>();
+        inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, codigoTipo));
+        inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, codigoTipo));
+        inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, codigoTipo));
+        inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, codigoTipo));
+        inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, codigoTipo));
+        inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, codigoTipo));
+        inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, codigoTipo));
+        inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, codigoTipo));
+        return inicialDetalle;
+    }
+
+    private List<ColegioDetalle> mapPrimaria(String codigo, int anio, int codigoTipo){
+        int grado = PRIMARIA_INDICE_INICIAL;
+        List<ColegioDetalle> inicialDetalle = new ArrayList<ColegioDetalle>();
+        inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, codigoTipo));
+        inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, codigoTipo));
+        inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, codigoTipo));
+        inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, codigoTipo));
+        inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, codigoTipo));
+        inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, codigoTipo));
+        return inicialDetalle;
+    }
+
+
+    private List<ColegioDetalle> mapSecundaria(String codigo, int anio, int codigoTipo){
+        int grado = SECUNDARIA_INDICE_INICIAL;
+        List<ColegioDetalle> inicialDetalle = new ArrayList<ColegioDetalle>();
+        inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, codigoTipo));
+        inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, codigoTipo));
+        inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, codigoTipo));
+        inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, codigoTipo));
+        inicialDetalle.add(new ColegioDetalle(codigo, anio, grado++, codigoTipo));
         return inicialDetalle;
     }
 }
