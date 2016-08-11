@@ -24,6 +24,13 @@ public class ColegioDetalle {
         this.codTipo = codTipo;
     }
 
+    public ColegioDetalle(String codigoColegio, int anio, int grado, int codTipo) {
+        this.codigoColegio = codigoColegio;
+        this.anio = anio;
+        this.grado = grado;
+        this.cantidad = 0;
+        this.codTipo = codTipo;
+    }
     public String getCodigoColegio() {
         return codigoColegio;
     }
