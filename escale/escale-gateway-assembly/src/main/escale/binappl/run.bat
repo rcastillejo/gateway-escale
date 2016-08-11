@@ -34,10 +34,12 @@ FOR %%D IN (%DIRS_JARS%) DO (
                 )
 )
 set JAVA_OPTS=-DLOGAPP=%LOG%
-set JVM_ARGS=-Xms16m -Xmx16m
+set JVM_ARGS=-Xms258m -Xmx512m
 
 REM echo %CLSPATH%
 
 REM Invocamos a la JVM para ejecutar la aplicacion
-REM echo %JAVA_HOME%\bin\java -classpath %DIR_CONFIG%;%CLSPATH% %JVM_ARGS% %JAVA_OPTS% %MAIN-CLASS%
-%JAVA_BIN%\java -classpath %DIR_CONFIG%;%CLSPATH% %JVM_ARGS% %JAVA_OPTS% %MAIN-CLASS% > %APP_NAME%.log
+echo.>> %APP_NAME%.log 2>&1
+echo *************!DATE!_!TIME!************* >> %APP_NAME%.log 2>&1
+echo %JAVA_HOME%\bin\java -classpath %DIR_CONFIG%;%CLSPATH% %JVM_ARGS% %JAVA_OPTS% %MAIN-CLASS% >> %APP_NAME%.log 2>&1
+%JAVA_BIN%\java -classpath %DIR_CONFIG%;%CLSPATH% %JVM_ARGS% %JAVA_OPTS% %MAIN-CLASS% >> %APP_NAME%.log 2>&1

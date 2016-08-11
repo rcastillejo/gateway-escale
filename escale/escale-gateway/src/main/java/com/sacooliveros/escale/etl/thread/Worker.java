@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Ricardo on 19/06/2016.
@@ -28,6 +29,8 @@ public class Worker implements Runnable {
     private Filter workerFilter;
     private BlockingQueue<Mensaje> cola;
     private AtomicBoolean workersEnable;
+    private AtomicInteger currentTransactions;
+    private Object tokenSynchro;
 
 
     public Worker(EscaleService escaleService, ServerConfiguration config, BlockingQueue<Mensaje> cola, AtomicBoolean workersEnable) {
@@ -60,6 +63,8 @@ public class Worker implements Runnable {
                 LOG.warn("No se encontro más colegios a leer");
             } catch (Exception e) {
                 LOG.error("Error del Sistema", e);
+            } finally {
+                liberarWorker();
             }
         }
     }
@@ -120,5 +125,32 @@ public class Worker implements Runnable {
             throw new MessageNotFoundException("No se obtuvo colegio a leer");
         }
 
+    }
+
+    /*
+     * Reducimos los contadores de transacciones en curso
+     */
+    private void liberarWorker() {
+        synchronized (tokenSynchro) {
+            int txnEnCurso = currentTransactions.decrementAndGet();
+            if (txnEnCurso < 0) {
+                    /*
+                     * No deberia bajar menos de CERO, en todo caso, lo dejamos abierto para ver si pasa.
+                     */
+                LOG.warn("ADVERTENCIA. Transacciones en curso [{}] no deberia ser menor a cero.", new Object[]{txnEnCurso});
+            } else {
+                tokenSynchro.notify();
+                LOG.debug("Liberamos transaccion. [{}] transacciones en curso.", new Object[]{txnEnCurso});
+            }
+        }
+    }
+
+
+    public void setCurrentTransactions(AtomicInteger currentTransactions) {
+        this.currentTransactions = currentTransactions;
+    }
+
+    public void setTokenSynchro(Object tokenSynchro) {
+        this.tokenSynchro = tokenSynchro;
     }
 }

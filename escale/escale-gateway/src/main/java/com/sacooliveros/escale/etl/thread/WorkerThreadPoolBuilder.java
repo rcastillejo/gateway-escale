@@ -21,8 +21,7 @@ public class WorkerThreadPoolBuilder {
     }
 
 
-    public static ThreadPoolExecutor createThreadFactory(ServerConfiguration config) {
-        int numberThreads = config.getNumThreads();
+    public static ThreadPoolExecutor createThreadFactory(int numberThreads) {
 
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(numberThreads,
                 numberThreads, 30, TimeUnit.MINUTES,

@@ -26,10 +26,10 @@
                 <property name="password" value="postgres"/>
 
                 <!-- Configuracion Pool de Conexiones -->
-                <!-- Concurrencia 20 sesiones -->
-                <property name="poolMaximumActiveConnections" value="20"/>
-                <!-- Concurrencia se encolara hasta 20 sesiones-->
-                <property name="poolMaximumIdleConnections" value="20"/>
+                <!-- Concurrencia X sesiones -->
+                <property name="poolMaximumActiveConnections" value="50"/>
+                <!-- Concurrencia se encolara hasta X sesiones-->
+                <property name="poolMaximumIdleConnections" value="50"/>
 
                 <property name="poolMaximumCheckoutTime" value="10"/>
             </dataSource>

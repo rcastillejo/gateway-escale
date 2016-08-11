@@ -4,6 +4,7 @@ import com.sacooliveros.escale.client.rest.RestEscaleClientService;
 import com.sacooliveros.escale.dao.mybatis.MyBatisDAOFactory;
 import com.sacooliveros.escale.etl.config.ServerConfiguration;
 import com.sacooliveros.escale.etl.message.Mensaje;
+import com.sacooliveros.escale.etl.thread.Reader;
 import com.sacooliveros.escale.etl.thread.ThreadBuilder;
 import com.sacooliveros.escale.etl.thread.Worker;
 import com.sacooliveros.escale.etl.thread.WorkerThreadPoolBuilder;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Ricardo on 19/06/2016.
@@ -26,6 +28,8 @@ public class LocalServer {
     private ServerConfiguration configuration;
     private MyBatisDAOFactory daoFactory;
     private BlockingQueue<Mensaje> queue;
+    private Object tokenSynchro;
+    private AtomicInteger currentTransactions;
 
 
     public LocalServer(String resource, BlockingQueue<Mensaje> queue) {
@@ -34,6 +38,8 @@ public class LocalServer {
         LOG.info("Iniciando Configuracion Dao Factory");
         this.daoFactory = new MyBatisDAOFactory(this.configuration.getMyBatisResource());
         this.queue = queue;
+        this.tokenSynchro = new Object();
+        this.currentTransactions = new AtomicInteger(0);
     }
 
 
@@ -51,7 +57,7 @@ public class LocalServer {
     private void executeWorkers(ServerConfiguration config, BlockingQueue<Mensaje> queue) throws Exception {
         LOG.info("Iniciando Configuracion del Pool de Worker");
 
-        ThreadPoolExecutor threadPool = WorkerThreadPoolBuilder.createThreadFactory(config);
+        ThreadPoolExecutor threadPool = WorkerThreadPoolBuilder.createThreadFactory(config.getNumThreads());
 
         LOG.debug("Fabrica para procesos asicronos creado:" + threadPool.getCorePoolSize());
         for (int workerId = 0; workerId < threadPool.getCorePoolSize(); workerId++) {
@@ -69,7 +75,10 @@ public class LocalServer {
                 RestEscaleClientService.newInstance(config.getClientConfig()), config.getConfig(),
                 this.daoFactory.getColegioDAO());
 
-        Runnable worker = ThreadBuilder.newInstaceWorker(config, colaAtencion, service);
+        Worker worker = ThreadBuilder.newInstaceWorker(config, colaAtencion, service);
+        worker.setTokenSynchro(tokenSynchro);
+        worker.setCurrentTransactions(currentTransactions);
+
         threadPool.execute(worker);
         LOG.debug("Proceso Asincrono Worker[" + worker + "] iniciado");
     }
@@ -83,7 +92,9 @@ public class LocalServer {
                 this.daoFactory.getColegioDAO(),
                 config.getInstituteBlock());
 
-        Runnable reader = ThreadBuilder.newInstanceReader(config, colaAtencion, service);
+        Reader reader = ThreadBuilder.newInstanceReader(config, colaAtencion, service);
+        reader.setTokenSynchro(tokenSynchro);
+        reader.setCurrentTransactions(currentTransactions);
 
         ThreadGroup readerGroup = new ThreadGroup("Readers");
         Thread thread = new Thread(readerGroup, reader);

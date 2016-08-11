@@ -42,11 +42,11 @@
             <fileMode>0755</fileMode>
             <includes>
                 <!--<include>**/*.sh</include>-->
-                <include>**/*.bat</include>
+                <include>**/run.bat</include>
             </includes>
         </fileSet>
 
-        <!-- Instalador del Servicio Windows -->
+        <!-- Instalador del Servicio Windows
         <fileSet>
             <directory>src/main/escale/executable</directory>
             <outputDirectory>/escale</outputDirectory>
@@ -56,5 +56,6 @@
                 <include>**/*.exe</include>
             </includes>
         </fileSet>
+         -->
     </fileSets>
 </assembly>

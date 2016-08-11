@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Ricardo on 18/06/2016.
@@ -25,6 +26,9 @@ public class Reader implements Runnable {
     private BlockingQueue<Mensaje> cola;
     private Filter readerFilter;
     private AtomicBoolean workerEnable;
+    private AtomicInteger currentTransactions;
+    private int numThreads;
+    private Object tokenSynchro;
 
     public Reader(Identificador identificador, EscaleService escaleService, ServerConfiguration config, BlockingQueue<Mensaje> cola,
                   AtomicBoolean workerEnable) {
@@ -35,6 +39,7 @@ public class Reader implements Runnable {
         this.reading = Boolean.TRUE;
         this.createFilter(config);
         this.workerEnable = workerEnable;
+        this.numThreads = config.getNumThreads();
     }
 
     private void createFilter(ServerConfiguration config) {
@@ -42,8 +47,6 @@ public class Reader implements Runnable {
         readerFilter.addLevels(config.getLevels());
         readerFilter.addStates(config.getStates());
     }
-
-
     @Override
     public void run() {
 
@@ -85,6 +88,7 @@ public class Reader implements Runnable {
 
     private void almacenarMensajes(List<Institucion> colegios) {
         for (Institucion colegio : colegios) {
+            verificarYAsignarWorkers();
             almacenarMensaje(colegio);
         }
     }
@@ -104,4 +108,45 @@ public class Reader implements Runnable {
     }
 
 
+    private void verificarYAsignarWorkers(){
+        verificarDisponibilidadWorkers();
+        asignarWorker();
+    }
+
+    /*
+     * El siguiente WHILE es para imedir que se sigan leyendo transacciones cuando no hay hilos de atencion disponibles
+     * Los workers deben reducir el contador que se incrementa
+     */
+    private void verificarDisponibilidadWorkers(){
+        while (true) {
+            synchronized (tokenSynchro) {
+                if (currentTransactions.intValue() >= numThreads) {
+                    try {
+                        LOG.warn("NO SE ACEPTAN transacciones, no hay capacidad de coperacion disponible. [{}] transacciones en curso.", new Object[]{currentTransactions.intValue()});
+                        tokenSynchro.wait(1000);
+                    } catch (InterruptedException e) {
+                        continue;
+                    }
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+
+    private void asignarWorker(){
+        synchronized (tokenSynchro) {
+            int txnEnCurso = currentTransactions.incrementAndGet();
+            LOG.debug("Aceptamos transaccion. [{}] transacciones en curso.", new Object[]{txnEnCurso});
+        }
+    }
+
+
+    public void setTokenSynchro(Object tokenSynchro) {
+        this.tokenSynchro = tokenSynchro;
+    }
+
+    public void setCurrentTransactions(AtomicInteger currentTransactions) {
+        this.currentTransactions = currentTransactions;
+    }
 }

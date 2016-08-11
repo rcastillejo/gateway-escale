@@ -16,14 +16,14 @@ public class ThreadBuilder {
     private ThreadBuilder() {
     }
 
-    public static Runnable newInstanceReader(ServerConfiguration configuration, BlockingQueue queue, EscaleService service){
+    public static Reader newInstanceReader(ServerConfiguration configuration, BlockingQueue queue, EscaleService service){
         return new Reader(
                 Identificador.getInstance(configuration.getServerName()),
                 service, configuration,
                 queue, workersEnable);
     }
 
-    public static Runnable newInstaceWorker(ServerConfiguration configuration, BlockingQueue queue, EscaleService service){
+    public static Worker newInstaceWorker(ServerConfiguration configuration, BlockingQueue queue, EscaleService service){
         return new Worker(
                 service, configuration,
                 queue, workersEnable);

@@ -56,6 +56,7 @@
         <param name="File" value="log/error.log" />
         <param name="DatePattern" value="'.'yyyyMMdd" />
         <param name="Append" value="true" />
+        <param name="Threshold" value="ERROR" />
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%-10t] (%c{2}) %m - [linea:%L]%n" />
         </layout>
@@ -63,18 +64,26 @@
 
     <logger name="com.sacooliveros.escale.etl" additivity="false">
         <level value="INFO" />
-        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="TRAZADO"/>
     </logger>
 
-    <logger name="com.sacooliveros.escale.service" additivity="false">
-        <level value="INFO" />
+    <logger name="com.sacooliveros.escale.etl.thread.Reader" additivity="false">
+        <level value="DEBUG" />
         <appender-ref ref="TRAZADO"/>
+    </logger>
+
+    <!-- Debug del Servicio
+    <logger name="com.sacooliveros.escale.service" additivity="false">
+        <level value="TRACE" />
+        <appender-ref ref="TRAZADO"/>
+        <appender-ref ref="ERROR"/>
     </logger>
 
     <logger name="com.sacooliveros.escale.dao" additivity="false">
-        <level value="INFO" />
+        <level value="ERROR" />
         <appender-ref ref="TRAZADO"/>
-    </logger>
+        <appender-ref ref="ERROR"/>
+    </logger> -->
 
     <logger name="com.sacooliveros.escale.log.Logp" additivity="false">
         <level value="INFO" />
@@ -82,10 +91,10 @@
     </logger>
 
 
-    <logger name="com.sacooliveros.escale.log.Logt" additivity="false">
+    <!--<logger name="com.sacooliveros.escale.log.Logt" additivity="false">
         <level value="INFO" />
         <appender-ref ref="TRANSACTION" />
-    </logger>
+    </logger>-->
 
     <logger name="com.sacooliveros.client.rest.filters" additivity="false">
         <level value="TRACE" />
@@ -96,9 +105,5 @@
         <level value="ERROR" />
         <appender-ref ref="ERROR" />
     </root>
-
-
-
-
 
 </log4j:configuration>

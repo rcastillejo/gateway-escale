@@ -7,7 +7,6 @@ import com.sacooliveros.escale.client.Filter;
 import com.sacooliveros.escale.client.dto.Institucion;
 import com.sacooliveros.escale.client.dto.InstitucionResponse;
 import com.sacooliveros.escale.client.dto.InstitucionesResponse;
-import com.sacooliveros.escale.client.exception.InstitutesNotFoundException;
 import com.sacooliveros.escale.dao.ColegioDAO;
 import com.sacooliveros.escale.mapper.EscaleMapper;
 import com.sacooliveros.escale.service.exception.EscaleServiceException;
