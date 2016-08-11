@@ -65,11 +65,13 @@
     <logger name="com.sacooliveros.escale.etl" additivity="false">
         <level value="INFO" />
         <appender-ref ref="TRAZADO"/>
+        <appender-ref ref="ERROR"/>
     </logger>
 
     <logger name="com.sacooliveros.escale.etl.thread.Reader" additivity="false">
         <level value="DEBUG" />
         <appender-ref ref="TRAZADO"/>
+        <appender-ref ref="ERROR"/>
     </logger>
 
     <!-- Debug del Servicio
@@ -99,6 +101,7 @@
     <logger name="com.sacooliveros.client.rest.filters" additivity="false">
         <level value="TRACE" />
         <appender-ref ref="TRAZADO_HTTP" />
+        <appender-ref ref="ERROR"/>
     </logger>
 
     <root>
