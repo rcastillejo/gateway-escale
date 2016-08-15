@@ -48,11 +48,12 @@ public class Worker implements Runnable {
 
     @Override
     public void run() {
-
+        LOG.info("Worker iniciando ...");
         while (workersEnable.get()) {
+            Mensaje mensaje = null;
             try {
 
-                Mensaje mensaje = obtenerMensaje();
+                mensaje = obtenerMensaje();
 
                 procesarColegio(mensaje);
 
@@ -64,9 +65,12 @@ public class Worker implements Runnable {
             } catch (Exception e) {
                 LOG.error("Error del Sistema", e);
             } finally {
-                liberarWorker();
+                if(mensaje != null){
+                    liberarWorker();
+                }
             }
         }
+        LOG.info("Worker detenido");
     }
 
     private void procesarColegio(Mensaje mensaje) {

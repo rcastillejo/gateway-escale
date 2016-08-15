@@ -26,21 +26,18 @@ public class Server {
     }
 
     public static void start(String[] args) {
-        System.out.println("Iniciando ["+ Arrays.toString(args) +"] ...");
         localServer = new LocalServer("broker.properties", new LinkedBlockingQueue<Mensaje>());
         try {
-            localServer.start();
-            LOG.info("Servicio inicado");
+            localServer.startAsTask();
         } catch (Exception e) {
-            LOG.error("Servicio no se pudo iniciar", e);
+            LOG.error("Error al iniciar", e);
         }
     }
 
     public static void stop(String[] args) {
-        System.out.println("Deteniendo ["+Arrays.toString(args)+"] ...");
         if (localServer != null) {
             try {
-                localServer.stop();
+                //localServer.stop();
                 LOG.info("Servicio detenido");
             } catch (Exception e) {
                 LOG.error("Servicio no se pudo detener", e);

@@ -3,6 +3,7 @@ package com.sacooliveros.escale.etl;
 import com.sacooliveros.escale.client.rest.RestEscaleClientService;
 import com.sacooliveros.escale.dao.mybatis.MyBatisDAOFactory;
 import com.sacooliveros.escale.etl.config.ServerConfiguration;
+import com.sacooliveros.escale.etl.listener.ReaderCompleteListener;
 import com.sacooliveros.escale.etl.message.Mensaje;
 import com.sacooliveros.escale.etl.thread.Reader;
 import com.sacooliveros.escale.etl.thread.ThreadBuilder;
@@ -30,35 +31,39 @@ public class LocalServer {
     private BlockingQueue<Mensaje> queue;
     private Object tokenSynchro;
     private AtomicInteger currentTransactions;
+    private ThreadPoolExecutor threadPool;
 
 
     public LocalServer(String resource, BlockingQueue<Mensaje> queue) {
         this.config = ResourceHelper.loadConfig(resource);
         this.configuration = new ServerConfiguration(config);
         LOG.info("Iniciando Configuracion Dao Factory");
-        this.daoFactory = new MyBatisDAOFactory(this.configuration.getMyBatisResource());
+        this.daoFactory = new MyBatisDAOFactory(configuration.getMyBatisResource());
         this.queue = queue;
         this.tokenSynchro = new Object();
         this.currentTransactions = new AtomicInteger(0);
+        LOG.info("Iniciando Configuracion del Pool de Worker");
+        this.threadPool = WorkerThreadPoolBuilder.createThreadFactory(configuration.getNumThreads());
+    }
+
+    private void configure(){
+
     }
 
 
-    public void start() throws Exception {
-        LOG.info("Iniciando Servicio [" + configuration.getServerName() + "]");
+    public void startAsTask() throws Exception {
+        LOG.info("Iniciando Proceso [" + configuration.getServerName() + "] ...");
+        execute();
+        LOG.info("Proceso Terminado [" + configuration.getServerName() + "]");
+    }
+
+    public void execute() throws Exception {
         executeReader(configuration, queue);
         executeWorkers(configuration, queue);
     }
 
-    public void stop() throws Exception {
-        LOG.info("Deteniendo el Servicio");
-    }
-
 
     private void executeWorkers(ServerConfiguration config, BlockingQueue<Mensaje> queue) throws Exception {
-        LOG.info("Iniciando Configuracion del Pool de Worker");
-
-        ThreadPoolExecutor threadPool = WorkerThreadPoolBuilder.createThreadFactory(config.getNumThreads());
-
         LOG.debug("Fabrica para procesos asicronos creado:" + threadPool.getCorePoolSize());
         for (int workerId = 0; workerId < threadPool.getCorePoolSize(); workerId++) {
             try {
@@ -92,7 +97,7 @@ public class LocalServer {
                 this.daoFactory.getColegioDAO(),
                 config.getInstituteBlock());
 
-        Reader reader = ThreadBuilder.newInstanceReader(config, colaAtencion, service);
+        Reader reader = ThreadBuilder.newInstanceReader(config, colaAtencion, service, threadPool);
         reader.setTokenSynchro(tokenSynchro);
         reader.setCurrentTransactions(currentTransactions);
 

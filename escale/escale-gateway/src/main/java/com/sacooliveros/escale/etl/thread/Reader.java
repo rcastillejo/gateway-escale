@@ -3,6 +3,7 @@ package com.sacooliveros.escale.etl.thread;
 import com.sacooliveros.escale.client.Filter;
 import com.sacooliveros.escale.client.dto.Institucion;
 import com.sacooliveros.escale.etl.config.ServerConfiguration;
+import com.sacooliveros.escale.etl.listener.ThreadCompleteListener;
 import com.sacooliveros.escale.etl.message.Mensaje;
 import com.sacooliveros.escale.etl.util.Identificador;
 import com.sacooliveros.escale.service.EscaleService;
@@ -10,8 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -19,27 +21,24 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Reader implements Runnable {
     public static final Logger LOG = LoggerFactory.getLogger(Reader.class);
-    private boolean reading;
     private Identificador identificador;
     private EscaleService escaleService;
     private String[] years;
     private BlockingQueue<Mensaje> cola;
     private Filter readerFilter;
-    private AtomicBoolean workerEnable;
     private AtomicInteger currentTransactions;
     private int numThreads;
     private Object tokenSynchro;
+    private final Set<ThreadCompleteListener> listeners;
 
-    public Reader(Identificador identificador, EscaleService escaleService, ServerConfiguration config, BlockingQueue<Mensaje> cola,
-                  AtomicBoolean workerEnable) {
+    public Reader(Identificador identificador, EscaleService escaleService, ServerConfiguration config, BlockingQueue<Mensaje> cola) {
         this.identificador = identificador;
         this.escaleService = escaleService;
         this.years = config.getYears();
         this.cola = cola;
-        this.reading = Boolean.TRUE;
         this.createFilter(config);
-        this.workerEnable = workerEnable;
         this.numThreads = config.getNumThreads();
+        this.listeners = new CopyOnWriteArraySet<ThreadCompleteListener>();
     }
 
     private void createFilter(ServerConfiguration config) {
@@ -49,41 +48,31 @@ public class Reader implements Runnable {
     }
     @Override
     public void run() {
+        LOG.info("Reader iniciando ...");
+        try {
+            leerColegios();
 
-        leerColegios();
-
-        verificarWorkers();
-    }
-
-    private void verificarWorkers(){
-        while(!cola.isEmpty()){
-            try {
-                LOG.info("Colegios restantes por procesar [{}] ...", cola.size());
-                Thread.sleep(1000L);
-            }catch (InterruptedException e){
-                LOG.warn("La espera fue interrumpida 1s");
-            }
+        } catch (Exception e) {
+            LOG.error("Error del Sistema", e);
+        } finally {
+            notifyListeners();
         }
-        LOG.info("Colegios leidos completamente");
-        workerEnable.set(Boolean.FALSE);
+        LOG.info("Reader detenido");
     }
 
     private void leerColegios(){
-        try {
-            int cantidad = escaleService.calcularTotalColegios(readerFilter);
-            LOG.info("Procesando colegios [{}] ...", cantidad);
-            while (escaleService.existeColegiosPorConsultar()) {
-                try {
-                    List<Institucion> colegios = escaleService.consultarSiguienteGrupoColegios(readerFilter);
-                    LOG.debug("Colegios procesando [leidos={},penientes={}]", new Object[]{escaleService.leidos(), escaleService.pendientes()});
-                    almacenarMensajes(colegios);
-                } catch (Exception e) {
-                    LOG.error("Error al consultar los colegios", e);
-                }
+        int cantidad = escaleService.calcularTotalColegios(readerFilter);
+        LOG.info("Procesando colegios [{}] ...", cantidad);
+        while (escaleService.existeColegiosPorConsultar()) {
+            try {
+                List<Institucion> colegios = escaleService.consultarSiguienteGrupoColegios(readerFilter);
+                LOG.debug("Colegios procesando [leidos={},penientes={}]", new Object[]{escaleService.leidos(), escaleService.pendientes()});
+                almacenarMensajes(colegios);
+            } catch (Exception e) {
+                LOG.error("Error al consultar los colegios", e);
             }
-        } catch (Exception e) {
-            LOG.error("Error del Sistema", e);
         }
+        LOG.info("Colegios leidos completamente");
     }
 
     private void almacenarMensajes(List<Institucion> colegios) {
@@ -148,5 +137,15 @@ public class Reader implements Runnable {
 
     public void setCurrentTransactions(AtomicInteger currentTransactions) {
         this.currentTransactions = currentTransactions;
+    }
+
+    public final void addListener(final ThreadCompleteListener listener){
+        listeners.add(listener);
+    }
+
+    private final void notifyListeners() {
+        for (ThreadCompleteListener listener : listeners) {
+            listener.notifyOfThreadComplete(this);
+        }
     }
 }
