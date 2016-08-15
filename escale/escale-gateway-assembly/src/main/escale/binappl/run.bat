@@ -1,7 +1,7 @@
 setLocal EnableDelayedExpansion
 
 REM autor: rcastillejo
-REM set JAVA_HOME="C:\Program Files\Java\jdk1.7.0_45"
+REM set JAVA_HOME=C:\Program Files\Java\jdk1.7.0_45
 set JAVA_BIN="%JAVA_HOME%"\bin
 
 
