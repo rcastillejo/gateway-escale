@@ -54,7 +54,7 @@ public class LocalServer {
     public void startAsTask() throws Exception {
         LOG.info("Iniciando Proceso [" + configuration.getServerName() + "] ...");
         execute();
-        LOG.info("Proceso Terminado [" + configuration.getServerName() + "]");
+        LOG.info("Proceso Iniciado [" + configuration.getServerName() + "]");
     }
 
     public void execute() throws Exception {

@@ -12,7 +12,7 @@ CREATE TABLE escale_colegios
   direccion character varying(255),
   ubigeo character varying(6),
   latitud numeric(10,5),
-  longitud numeric(10,5),
+  altitud numeric(10,5),
   CONSTRAINT pk_codmodular PRIMARY KEY (codmodular)
 )
 WITH (
@@ -31,6 +31,7 @@ CREATE TABLE escale_colegios_detalle
   codgrado integer NOT NULL,
   anio integer NOT NULL,
   cantidad integer,
+  codtipo integer,
   CONSTRAINT pk_detalle PRIMARY KEY (codmodular, codgrado, anio)
 )
 WITH (

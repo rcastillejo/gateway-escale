@@ -147,7 +147,7 @@ public class ColegioMyBatisDAO implements ColegioDAO {
         if (mapper.insertDetalle(model) == 0) {
             throw new DataNotRegisterDAOException("No se pudo registrar [" + model + "]");
         }
-        Logp.show("UPDATE_COLEGIO", init);
+        Logp.show("INSERT_DETALLE", init);
         LOG.info("Registrado [{}]", model);
 
     }

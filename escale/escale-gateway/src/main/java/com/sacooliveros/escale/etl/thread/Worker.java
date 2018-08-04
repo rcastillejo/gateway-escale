@@ -104,7 +104,7 @@ public class Worker implements Runnable {
      *
      * @return Mensaje
      */
-    public Mensaje obtenerMensaje() {
+    private Mensaje obtenerMensaje() {
         Mensaje mensaje = null;
         LOG.trace("Esperando leer de la cola ...");
         while (workersEnable.get()) {
@@ -116,7 +116,7 @@ public class Worker implements Runnable {
                     break;
                 }
             } catch (InterruptedException e) {
-                LOG.warn("No se pudo leer de la cola");
+                LOG.warn("No se pudo leer de la cola", e);
             }
         }
 
