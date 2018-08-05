@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<!-- ===================================================================== -->
+<!--                                                                       -->
+<!--  Log4j Configuration                                                  -->
+<!--                                                                       -->
+<!-- ===================================================================== -->
+<!-- $Id: log4j.xml 5723 2007-07-08 22:54:42Z myuan $ -->
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%-10t] %m %l%n" />
+        </layout>
+    </appender>
+
+    <appender name="TRAZADO" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="log/trazado.log" />
+        <param name="DatePattern" value="'.'yyyyMMdd" />
+        <param name="Append" value="true" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%-10t] (%c{2}) %m - [linea:%L]%n" />
+        </layout>
+    </appender>
+
+    <appender name="PERFORMANCE" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="log/performance.log" />
+        <param name="DatePattern" value="'.'yyyyMMdd" />
+        <param name="Append" value="true" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%-10t] (%c{2}) %m - [linea:%L]%n" />
+        </layout>
+    </appender>
+
+    <appender name="TRANSACTION" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="log/transaction.log" />
+        <param name="DatePattern" value="'.'yyyyMMdd" />
+        <param name="Append" value="true" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%-10t] (%c{2}) %m - [linea:%L]%n" />
+        </layout>
+    </appender>
+
+    <appender name="TRAZADO_HTTP" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="log/trazado_http.log" />
+        <param name="DatePattern" value="'.'yyyyMMdd" />
+        <param name="Append" value="true" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%-10t] (%c{2}) %m - [linea:%L]%n" />
+        </layout>
+    </appender>
+
+    <appender name="ERROR" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="log/error.log" />
+        <param name="DatePattern" value="'.'yyyyMMdd" />
+        <param name="Append" value="true" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%-10t] (%c{2}) %m - [linea:%L]%n" />
+        </layout>
+    </appender>
+
+    <logger name="com.sacooliveros.escale.service" additivity="false">
+        <level value="DEBUG" />
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="TRAZADO"/>
+    </logger>
+
+    <logger name="com.sacooliveros.escale.dao" additivity="false">
+        <level value="DEBUG" />
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="TRAZADO"/>
+    </logger>
+
+    <logger name="com.sacooliveros.escale.log.Logp" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="PERFORMANCE" />
+    </logger>
+
+
+    <logger name="com.sacooliveros.escale.log.Logt" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="TRANSACTION" />
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <logger name="com.sacooliveros.client.rest.filters" additivity="false">
+        <level value="TRACE" />
+        <appender-ref ref="TRAZADO_HTTP" />
+    </logger>
+
+    <root>
+        <level value="ERROR" />
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="ERROR" />
+    </root>
+
+
+
+
+
+</log4j:configuration>

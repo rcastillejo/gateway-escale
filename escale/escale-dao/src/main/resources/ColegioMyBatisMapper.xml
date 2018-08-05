@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sacooliveros.escale.dao.mybatis.ColegioMyBatisMapper" >
+    
+    <resultMap id="recordResultMap" type="com.sacooliveros.escale.bean.Colegio" >
+        <id column="codmodular" property="codigo" jdbcType="VARCHAR" />
+        <result column="codlocal" property="codigoLocal" jdbcType="VARCHAR" />
+        <result column="nombre" property="nombre" jdbcType="VARCHAR" />
+        <result column="codnivel" property="codigoNivel" jdbcType="VARCHAR" />
+        <result column="gestion" property="gestion" jdbcType="VARCHAR" />
+        <result column="direccion" property="direccion" jdbcType="VARCHAR" />
+        <result column="ubigeo" property="ubigueo" jdbcType="VARCHAR" />
+        <result column="latitud" property="latitud" jdbcType="DOUBLE" />
+        <result column="altitud" property="altitud" jdbcType="DOUBLE" />
+    </resultMap>
+
+    <resultMap id="recordResultDetalleMap" type="com.sacooliveros.escale.bean.ColegioDetalle" >
+        <id column="codmodular" property="codigoColegio" jdbcType="VARCHAR" />
+        <result column="anio" property="anio" jdbcType="INTEGER" />
+        <result column="codgrado" property="grado" jdbcType="INTEGER" />
+        <result column="cantidad" property="cantidad" jdbcType="INTEGER" />
+        <result column="codtipo" property="codTipo" jdbcType="INTEGER" />
+    </resultMap>
+
+    <select id="get" resultMap="recordResultMap">
+        SELECT
+            codmodular,
+            codlocal,
+            nombre,
+            codnivel,
+            gestion,
+            direccion,
+            ubigeo,
+            latitud,
+            altitud
+        FROM
+            escale_colegios
+        WHERE
+            codmodular = #{codigo}
+    </select>
+
+    <select id="getDetalle" resultMap="recordResultDetalleMap">
+        SELECT
+        codmodular,
+        codgrado,
+        anio,
+        cantidad,
+        codtipo
+        FROM
+        escale_colegios_detalle
+        WHERE
+        codmodular = #{detalle.codigoColegio}
+        And
+        anio = #{detalle.anio}
+        And
+        codgrado = #{detalle.grado}
+    </select>
+  
+    <insert id="insert">
+        Insert into escale_colegios
+            (codmodular, codlocal, nombre, codnivel, gestion, direccion, ubigeo, latitud, altitud)
+        values
+            (#{codigo},#{codigoLocal},#{nombre},#{codigoNivel},#{gestion},#{direccion},#{ubigueo},#{latitud},#{altitud})
+    </insert>
+
+    <insert id="insertDetalle">
+        Insert into escale_colegios_detalle
+        (codmodular, codgrado, anio, cantidad, codtipo)
+        values
+        (#{codigoColegio},#{grado},#{anio},#{cantidad}, #{codTipo})
+    </insert>
+
+    <update id="update">
+        Update
+            escale_colegios
+        Set
+            codlocal = #{codigoLocal},
+            nombre = #{nombre},
+            codnivel = #{codigoNivel},
+            gestion = #{gestion},
+            direccion = #{direccion},
+            ubigeo = #{ubigueo},
+            latitud = #{latitud},
+            altitud = #{altitud}
+        Where
+            codmodular=#{codigo}
+    </update>
+
+    <insert id="updateDetalle">
+        Update
+            escale_colegios_detalle
+        Set
+            cantidad = #{cantidad},
+            codtipo = #{codTipo}
+        Where
+            codmodular = #{codigoColegio}
+        and codgrado = #{grado}
+        and anio = #{anio}
+    </insert>
+
+</mapper>

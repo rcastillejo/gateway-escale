@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<assembly>
+    <id>installer</id>
+    <formats>
+        <format>tar</format>
+    </formats>
+    
+    <includeBaseDirectory>false</includeBaseDirectory>
+    
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>/escale/libs</outputDirectory>
+        </dependencySet>
+    </dependencySets>
+    
+    <fileSets>
+        <fileSet>
+            <directory>src/main/escale/libs</directory>
+            <outputDirectory>/escale/libs</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+        
+        <fileSet>
+            <directory>src/main/escale/config</directory>
+            <outputDirectory>/escale/config</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+        
+        <fileSet>
+            <directory>src/main/escale/log</directory>
+            <outputDirectory>/escale/log</outputDirectory>
+        </fileSet>
+        
+        <fileSet>
+            <directory>src/main/escale/binappl</directory>
+            <outputDirectory>/escale</outputDirectory>
+            <lineEnding>keep</lineEnding>
+            <fileMode>0755</fileMode>
+            <includes>
+                <!--<include>**/*.sh</include>-->
+                <include>**/run.bat</include>
+            </includes>
+        </fileSet>
+
+        <!-- Instalador del Servicio Windows
+        <fileSet>
+            <directory>src/main/escale/executable</directory>
+            <outputDirectory>/escale</outputDirectory>
+            <lineEnding>keep</lineEnding>
+            <fileMode>0755</fileMode>
+            <includes>
+                <include>**/*.exe</include>
+            </includes>
+        </fileSet>
+         -->
+    </fileSets>
+</assembly>
